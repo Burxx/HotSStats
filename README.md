@@ -6,7 +6,8 @@ based on https://github.com/barrett777/Heroes.ReplayParser
 This program creates charts from your replays, e.g. wins/losses per day or how often which hero was played on which map. It uses Barrett777's replay parser to extract the data.
 
 
-**How to use***
+**How to use**
+
 First you need to add replays. Replays are being searched in the standard HotS replay folder. The gathered stats can be saved to a file because loading the stats is considerably
 faster than reading the replays. New replays can be added later.
 
