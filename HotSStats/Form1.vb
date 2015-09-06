@@ -54,6 +54,7 @@ Public Class Form1
 
         Dim heroesAccountsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Heroes of the Storm\Accounts")
         Dim allReplays = Directory.GetFiles(heroesAccountsFolder, "*.StormReplay", SearchOption.AllDirectories)
+        Grp_Filter.Visible = True
         Lb_Time.Visible = True
         Dim LastAddedReplay = ReplayList.DateOfLastAddedReplay
 
