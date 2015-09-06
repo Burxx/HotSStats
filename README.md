@@ -14,4 +14,5 @@ faster than reading the replays. New replays can be added later.
 Once replay stats are available the filter elements appear. Replays can be filtered by player name, game type, hero, map, length, date and win or loss.
 For the filtered replays charts can be created.
 
-
+The very first time you start the program the settings dialog is shown. If new heroes have been published by Blizzard you can enter them here and define role and attack type.
+You can always open these settings later and add more heroes.
