@@ -9,6 +9,11 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "HotSStats", "HotSStats\HotS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication1", "Heroes.ReplayParser.ConsoleApplication\ConsoleApplication1\ConsoleApplication1.csproj", "{861DB181-6C12-48CB-AA2A-19B374ECA319}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3560B490-72C7-4ED5-9890-7A5B69F4AEBB}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
