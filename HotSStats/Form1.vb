@@ -133,7 +133,7 @@ Public Class Form1
             If File.GetLastWriteTime(rp) > ReplayList.DateOfLastAddedReplay Then ReplayList.DateOfLastAddedReplay = File.GetLastWriteTime(rp)
             Rep.Gamemode = replay.GameMode
             If replay.Timestamp.Ticks = 0 Then
-                Rep.Time = File.GetLastWriteTime(rp)
+                Rep.Time = File.GetLastWriteTimeUtc(rp)
             Else
                 Rep.Time = replay.Timestamp
             End If
