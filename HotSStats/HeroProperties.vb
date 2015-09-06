@@ -54,7 +54,7 @@
     End Function
 
     ''' <summary>
-    ''' Returns Ranged or Melee
+    ''' Returns Ranged or Melee 
     ''' </summary>
     ''' <param name="Hero"></param>
     ''' <returns></returns>
