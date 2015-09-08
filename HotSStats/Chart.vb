@@ -1,4 +1,5 @@
 ﻿Imports System.Globalization
+Imports System.Text.RegularExpressions
 
 Module Chart
 
@@ -6,6 +7,10 @@ Module Chart
     Class ReplayValueCounter
         Public Win As Integer
         Public Loss As Integer
+        Public WinWithPlayer As Integer
+        Public WinAgainstPlayer As Integer
+        Public LossWithPlayer As Integer
+        Public LossAgainstPlayer As Integer
         Public Players10 As Integer
         Public Players5 As Integer
         Public Players1 As Integer
@@ -30,7 +35,11 @@ Module Chart
             Dim tr = t.NewRow()
             tr("Item") = Key
             tr("Win") = Win
-            tr("Loss")=loss  
+            tr("Loss")=Loss
+            tr("WinWith") = WinWithPlayer
+            tr("LossWith") = LossWithPlayer
+            tr("WinAgainst") = WinAgainstPlayer
+            tr("LossAgainst") = LossAgainstPlayer
             tr("PvP") = Players10
             tr("PvC") = Players5
             tr("Solo") = Players1
@@ -178,6 +187,10 @@ Module Chart
         Table.Columns.Add("Item", GetType(String))
         Table.Columns.Add("Win", GetType(Integer))
         Table.Columns.Add("Loss", GetType(Integer))
+        Table.Columns.Add("WinWith", GetType(Integer))
+        Table.Columns.Add("LossWith", GetType(Integer))
+        Table.Columns.Add("WinAgainst", GetType(Integer))
+        Table.Columns.Add("LossAgainst", GetType(Integer))
         Table.Columns.Add("PvP", GetType(Integer))
         Table.Columns.Add("PvC", GetType(Integer))
         Table.Columns.Add("Solo", GetType(Integer))
@@ -326,12 +339,30 @@ Module Chart
 
     Private Sub countAllReplayValues(ReplayValues As SortedList(Of Object, ReplayValueCounter), Replay As ReplayStats, Category As Object)
         If Not ReplayValues.ContainsKey(Category) Then ReplayValues.Add(Category, New ReplayValueCounter)
+        Dim PlayWithOtherPlayer = False
+        If Form1.DD_OtherPlayer.SelectedIndex > 0 Then
+            If Replay.OwnTeam.Contains(OtherPlayerName) Then PlayWithOtherPlayer = True
+        End If
 
-        ' Win / Loss
-        If Replay.isWinner Then
+            ' Win / Loss
+            If Replay.isWinner Then
             ReplayValues(Category).Win += 1
+            If Form1.DD_OtherPlayer.SelectedIndex > 0 Then
+                If PlayWithOtherPlayer Then
+                    ReplayValues(Category).WinWithPlayer += 1
+                Else
+                    ReplayValues(Category).WinAgainstPlayer += 1
+                End If
+            End If
         Else
             ReplayValues(Category).Loss += 1
+            If Form1.DD_OtherPlayer.SelectedIndex > 0 Then
+                If PlayWithOtherPlayer Then
+                    ReplayValues(Category).LossWithPlayer += 1
+                Else
+                    ReplayValues(Category).LossAgainstPlayer += 1
+                End If
+            End If
         End If
 
         ' Game Type
@@ -523,6 +554,17 @@ Module Chart
                 chart.Series.Add("Ranged")
                 chart.Series(0).Points.DataBind(table.DefaultView, "Item", "Melee", Nothing)
                 chart.Series(1).Points.DataBind(table.DefaultView, "Item", "Ranged", Nothing)
+            Case "Wins/Losses with/against ..."
+                chart.Legends(0).Title = "Wins / Losses with/against " + OtherPlayerName
+                chart.Series.Add("Wins with " + OtherPlayerName)
+                chart.Series.Add("Losses with " + OtherPlayerName)
+                chart.Series.Add("Wins against " + OtherPlayerName)
+                chart.Series.Add("Losses against " + OtherPlayerName)
+                chart.Series(0).Points.DataBind(table.DefaultView, "Item", "WinWith", Nothing)
+                chart.Series(1).Points.DataBind(table.DefaultView, "Item", "LossWith", Nothing)
+                chart.Series(2).Points.DataBind(table.DefaultView, "Item", "WinAgainst", Nothing)
+                chart.Series(3).Points.DataBind(table.DefaultView, "Item", "LossAgainst", Nothing)
+
             Case Else
                 chart.Legends(0).Title = "Wins / Losses"
                 chart.Series.Add("Wins")

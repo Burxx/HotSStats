@@ -24,9 +24,9 @@ Partial Class Form1
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
-        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend2 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.Butt_ReadReplays = New System.Windows.Forms.Button()
         Me.DD_GameType = New System.Windows.Forms.ComboBox()
         Me.Lb_ReplayCount = New System.Windows.Forms.Label()
@@ -58,9 +58,10 @@ Partial Class Form1
         Me.Butt_Settings = New System.Windows.Forms.Button()
         Me.lb_ReplaysLoaded = New System.Windows.Forms.Label()
         Me.Lb_Added = New System.Windows.Forms.Label()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.DD_OtherPlayer = New System.Windows.Forms.ComboBox()
         Me.DD_Map = New HotSStats.DropdownListbox()
         Me.DD_Heroes = New HotSStats.DropdownListbox()
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         CType(Me.Bar_MinLength, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Bar_MaxLength, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Bar_MaxDate, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -92,7 +93,7 @@ Partial Class Form1
         Me.DD_GameType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.DD_GameType.FormattingEnabled = True
         Me.DD_GameType.Items.AddRange(New Object() {"Game Mode", "Against A.I.", "QuickMatch", "Hero League", "Team League"})
-        Me.DD_GameType.Location = New System.Drawing.Point(12, 60)
+        Me.DD_GameType.Location = New System.Drawing.Point(12, 85)
         Me.DD_GameType.Margin = New System.Windows.Forms.Padding(5)
         Me.DD_GameType.Name = "DD_GameType"
         Me.DD_GameType.Size = New System.Drawing.Size(221, 28)
@@ -101,7 +102,7 @@ Partial Class Form1
         'Lb_ReplayCount
         '
         Me.Lb_ReplayCount.AutoSize = True
-        Me.Lb_ReplayCount.Location = New System.Drawing.Point(8, 113)
+        Me.Lb_ReplayCount.Location = New System.Drawing.Point(8, 116)
         Me.Lb_ReplayCount.Margin = New System.Windows.Forms.Padding(5, 0, 5, 0)
         Me.Lb_ReplayCount.Name = "Lb_ReplayCount"
         Me.Lb_ReplayCount.Size = New System.Drawing.Size(79, 20)
@@ -137,7 +138,7 @@ Partial Class Form1
         'LB_Wins
         '
         Me.LB_Wins.AutoSize = True
-        Me.LB_Wins.Location = New System.Drawing.Point(8, 133)
+        Me.LB_Wins.Location = New System.Drawing.Point(8, 135)
         Me.LB_Wins.Margin = New System.Windows.Forms.Padding(5, 0, 5, 0)
         Me.LB_Wins.Name = "LB_Wins"
         Me.LB_Wins.Size = New System.Drawing.Size(57, 20)
@@ -147,7 +148,7 @@ Partial Class Form1
         'LB_Winrate
         '
         Me.LB_Winrate.AutoSize = True
-        Me.LB_Winrate.Location = New System.Drawing.Point(97, 133)
+        Me.LB_Winrate.Location = New System.Drawing.Point(97, 135)
         Me.LB_Winrate.Margin = New System.Windows.Forms.Padding(5, 0, 5, 0)
         Me.LB_Winrate.Name = "LB_Winrate"
         Me.LB_Winrate.Size = New System.Drawing.Size(36, 20)
@@ -227,18 +228,18 @@ Partial Class Form1
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Chart1.BackColor = System.Drawing.SystemColors.Control
-        ChartArea2.BackColor = System.Drawing.SystemColors.Control
-        ChartArea2.Name = "ChartArea1"
-        Me.Chart1.ChartAreas.Add(ChartArea2)
-        Legend2.BackColor = System.Drawing.SystemColors.Control
-        Legend2.Name = "Legend1"
-        Me.Chart1.Legends.Add(Legend2)
+        ChartArea1.BackColor = System.Drawing.SystemColors.Control
+        ChartArea1.Name = "ChartArea1"
+        Me.Chart1.ChartAreas.Add(ChartArea1)
+        Legend1.BackColor = System.Drawing.SystemColors.Control
+        Legend1.Name = "Legend1"
+        Me.Chart1.Legends.Add(Legend1)
         Me.Chart1.Location = New System.Drawing.Point(-1, 258)
         Me.Chart1.Name = "Chart1"
-        Series2.ChartArea = "ChartArea1"
-        Series2.Legend = "Legend1"
-        Series2.Name = "Series1"
-        Me.Chart1.Series.Add(Series2)
+        Series1.ChartArea = "ChartArea1"
+        Series1.Legend = "Legend1"
+        Series1.Name = "Series1"
+        Me.Chart1.Series.Add(Series1)
         Me.Chart1.Size = New System.Drawing.Size(1157, 371)
         Me.Chart1.TabIndex = 16
         Me.Chart1.Text = "Chart1"
@@ -284,7 +285,7 @@ Partial Class Form1
         '
         Me.DD_ChartData.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.DD_ChartData.FormattingEnabled = True
-        Me.DD_ChartData.Items.AddRange(New Object() {"Show ...", "Wins/Losses", "Game Types", "Heroes", "Hero Roles", "Attack Types", "Highest Tiers"})
+        Me.DD_ChartData.Items.AddRange(New Object() {"Show ...", "Wins/Losses", "Wins/Losses with/against ...", "Game Types", "Heroes", "Hero Roles", "Attack Types", "Highest Tiers"})
         Me.DD_ChartData.Location = New System.Drawing.Point(8, 32)
         Me.DD_ChartData.Margin = New System.Windows.Forms.Padding(5)
         Me.DD_ChartData.Name = "DD_ChartData"
@@ -304,6 +305,7 @@ Partial Class Form1
         '
         Me.Grp_Filter.AutoSize = True
         Me.Grp_Filter.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.Grp_Filter.Controls.Add(Me.DD_OtherPlayer)
         Me.Grp_Filter.Controls.Add(Me.CB_Losses)
         Me.Grp_Filter.Controls.Add(Me.CB_Wins)
         Me.Grp_Filter.Controls.Add(Me.PB_Date)
@@ -325,8 +327,8 @@ Partial Class Form1
         Me.Grp_Filter.Location = New System.Drawing.Point(168, 5)
         Me.Grp_Filter.Margin = New System.Windows.Forms.Padding(3, 3, 3, 0)
         Me.Grp_Filter.Name = "Grp_Filter"
-        Me.Grp_Filter.Padding = New System.Windows.Forms.Padding(3, 3, 3, 0)
-        Me.Grp_Filter.Size = New System.Drawing.Size(986, 172)
+        Me.Grp_Filter.Padding = New System.Windows.Forms.Padding(3, 0, 3, 0)
+        Me.Grp_Filter.Size = New System.Drawing.Size(986, 174)
         Me.Grp_Filter.TabIndex = 24
         Me.Grp_Filter.TabStop = False
         Me.Grp_Filter.Text = "        Replay Filter"
@@ -335,7 +337,7 @@ Partial Class Form1
         'CB_Losses
         '
         Me.CB_Losses.AutoSize = True
-        Me.CB_Losses.Location = New System.Drawing.Point(470, 62)
+        Me.CB_Losses.Location = New System.Drawing.Point(487, 57)
         Me.CB_Losses.Name = "CB_Losses"
         Me.CB_Losses.Size = New System.Drawing.Size(79, 24)
         Me.CB_Losses.TabIndex = 27
@@ -345,7 +347,7 @@ Partial Class Form1
         'CB_Wins
         '
         Me.CB_Wins.AutoSize = True
-        Me.CB_Wins.Location = New System.Drawing.Point(470, 27)
+        Me.CB_Wins.Location = New System.Drawing.Point(487, 27)
         Me.CB_Wins.Name = "CB_Wins"
         Me.CB_Wins.Size = New System.Drawing.Size(63, 24)
         Me.CB_Wins.TabIndex = 26
@@ -372,7 +374,6 @@ Partial Class Form1
         '
         'DD_PlayerNames
         '
-        Me.DD_PlayerNames.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.DD_PlayerNames.FormattingEnabled = True
         Me.DD_PlayerNames.Location = New System.Drawing.Point(12, 25)
         Me.DD_PlayerNames.Name = "DD_PlayerNames"
@@ -382,7 +383,7 @@ Partial Class Form1
         'Lb_Time
         '
         Me.Lb_Time.AutoSize = True
-        Me.Lb_Time.Location = New System.Drawing.Point(225, 113)
+        Me.Lb_Time.Location = New System.Drawing.Point(225, 116)
         Me.Lb_Time.Margin = New System.Windows.Forms.Padding(5, 0, 5, 0)
         Me.Lb_Time.Name = "Lb_Time"
         Me.Lb_Time.Size = New System.Drawing.Size(47, 20)
@@ -431,11 +432,22 @@ Partial Class Form1
         Me.Lb_Added.Size = New System.Drawing.Size(0, 20)
         Me.Lb_Added.TabIndex = 30
         '
+        'Timer1
+        '
+        '
+        'DD_OtherPlayer
+        '
+        Me.DD_OtherPlayer.FormattingEnabled = True
+        Me.DD_OtherPlayer.Location = New System.Drawing.Point(12, 55)
+        Me.DD_OtherPlayer.Name = "DD_OtherPlayer"
+        Me.DD_OtherPlayer.Size = New System.Drawing.Size(221, 28)
+        Me.DD_OtherPlayer.TabIndex = 29
+        '
         'DD_Map
         '
         Me.DD_Map.FormattingEnabled = True
         Me.DD_Map.ItemHeight = 20
-        Me.DD_Map.Location = New System.Drawing.Point(241, 27)
+        Me.DD_Map.Location = New System.Drawing.Point(258, 27)
         Me.DD_Map.Name = "DD_Map"
         Me.DD_Map.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple
         Me.DD_Map.Size = New System.Drawing.Size(221, 24)
@@ -445,15 +457,12 @@ Partial Class Form1
         '
         Me.DD_Heroes.FormattingEnabled = True
         Me.DD_Heroes.ItemHeight = 20
-        Me.DD_Heroes.Location = New System.Drawing.Point(241, 62)
+        Me.DD_Heroes.Location = New System.Drawing.Point(258, 57)
         Me.DD_Heroes.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
         Me.DD_Heroes.Name = "DD_Heroes"
         Me.DD_Heroes.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple
         Me.DD_Heroes.Size = New System.Drawing.Size(221, 24)
         Me.DD_Heroes.TabIndex = 19
-        '
-        'Timer1
-        '
         '
         'Form1
         '
@@ -527,4 +536,5 @@ Partial Class Form1
     Friend WithEvents lb_ReplaysLoaded As Label
     Friend WithEvents Lb_Added As Label
     Friend WithEvents Timer1 As Timer
+    Friend WithEvents DD_OtherPlayer As ComboBox
 End Class

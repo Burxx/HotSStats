@@ -247,8 +247,10 @@ Public Class Form1
     End Sub
 
     Sub FilterReplays()
+        If Not LoadingComplete Then Exit Sub
         ReplayList.selected = 0
         ReplayList.Wins = 0
+
         For Each rp In ReplayList.Stats
             Select Case DD_GameType.SelectedIndex
                 Case 1
@@ -295,6 +297,19 @@ Public Class Form1
             End If
             If CB_Wins.Checked AndAlso Not CB_Losses.Checked AndAlso Not rp.isWinner Then rp.isSelected = False : Continue For
             If CB_Losses.Checked AndAlso Not CB_Wins.Checked AndAlso rp.isWinner Then rp.isSelected = False : Continue For
+
+            If DD_OtherPlayer.SelectedIndex > 0 Then
+                Dim otherPlayerFound = False
+                For Each t In rp.Teams
+                    For Each p In t.Players
+                        If p.Name = OtherPlayerName Then otherPlayerFound = True : Exit For
+                    Next
+                Next
+                If Not otherPlayerFound Then
+                    rp.isSelected = False
+                    Continue For
+                End If
+            End If
 
             If PlayerName <> "" Then
                 If rp.playerFound Then
@@ -425,6 +440,8 @@ Public Class Form1
     Sub ReadPlayerNames()
         Dim computer As New Regex(".* \d{1,2}$")
         Dim Names As New Dictionary(Of String, Integer)
+        Dim max As Integer = 0
+        Dim maxName As String = ""
         For Each rp In ReplayList.Stats
             For Each team In rp.Teams
                 For Each player In team.Players
@@ -435,17 +452,28 @@ Public Class Form1
                             Names.Add(player.Name, 1)
                         Else
                             Names(player.Name) += 1
+                            If Names(player.Name) > max Then
+                                max = Names(player.Name)
+                                maxName = player.Name
+                            End If
                         End If
                     End If
                 Next
             Next
         Next
         DD_PlayerNames.Items.Clear()
+        DD_OtherPlayer.Items.Add("Stats for Player ...")
+        DD_OtherPlayer.Items.Clear()
+        DD_OtherPlayer.Items.Add("Games played with/against ...")
 
-        For Each n In Names.OrderBy(Function(x) (10000000 - x.Value).ToString("0000000") + x.Key)
+        '        For Each n In Names.OrderBy(Function(x) (10000000 - x.Value).ToString("0000000") + x.Key)
+        For Each n In Names.OrderBy(Function(x) x.Key)
             DD_PlayerNames.Items.Add(n.Key + " (" + n.Value.ToString + ")")
+            DD_OtherPlayer.Items.Add(n.Key + " (" + n.Value.ToString + ")")
         Next
-        DD_PlayerNames.SelectedIndex = 0
+        'DD_PlayerNames.SelectedIndex = 0
+        DD_PlayerNames.SelectedItem = maxName + " (" + max.ToString + ")"
+        DD_OtherPlayer.SelectedIndex = 0
     End Sub
 
     Private Sub DD_Heroes_SelectedIndexChanged(sender As Object, e As EventArgs)
@@ -587,5 +615,16 @@ Public Class Form1
             Timer1.Stop()
         End If
 
+    End Sub
+
+    Private Sub DD_OtherPlayer_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DD_OtherPlayer.SelectedIndexChanged
+        Dim name As New Regex("^(.*) \(\d+\)$")
+        If DD_OtherPlayer.SelectedIndex > 0 Then
+            OtherPlayerName = name.Match(CStr(DD_OtherPlayer.SelectedItem)).Groups(1).Value
+        Else
+            OtherPlayerName = ""
+        End If
+        FilterReplays()
+        ChartIt()
     End Sub
 End Class

@@ -43,6 +43,12 @@ End Class
     Public Players As New List(Of ReplayStatsPlayer)
     Public Milestones As New List(Of TimeSpan)
     Public Humans As Integer
+    Public Function Contains(name As String) As Boolean
+        For Each p In Players
+            If p.Name = name Then Return True
+        Next
+        Return False
+    End Function
 End Class
 
 <Serializable()> Public Class ReplayStatsPlayer
