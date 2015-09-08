@@ -22,6 +22,7 @@
     Public LoadingComplete As Boolean = False
     Public Closing As Boolean = False
     Public skipCounter As Integer = 0
+    Public addCounter As Integer = 0
 
 
 End Module

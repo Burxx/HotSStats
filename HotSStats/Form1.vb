@@ -51,7 +51,6 @@ Public Class Form1
 
 
     Private Sub Butt_ReadReplays_Click(sender As Object, e As EventArgs) Handles Butt_ReadReplays.Click
-
         Dim heroesAccountsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Heroes of the Storm\Accounts")
         Dim allReplays = Directory.GetFiles(heroesAccountsFolder, "*.StormReplay", SearchOption.AllDirectories)
         Grp_Filter.Visible = True
@@ -59,7 +58,7 @@ Public Class Form1
         Dim LastAddedReplay = ReplayList.DateOfLastAddedReplay
 
         ReplayList.TimeOfLastUpdate = Now
-
+        addCounter = 0
         Dim BunchOfReplays As New List(Of String)
         For Each rp In allReplays
             If Globals.Closing Then Exit Sub
@@ -99,6 +98,11 @@ Public Class Form1
         '    End If
         'Next
         UpdateAfterLoading()
+        Lb_Added.Visible = True
+        Lb_Added.Text = addCounter.ToString + " Replays added"
+        Lb_Added.ForeColor = Color.DarkBlue
+        Timer1.Interval = 5000
+        Timer1.Start()
     End Sub
 
     Sub ReadReplay(rp As String)
@@ -122,6 +126,7 @@ Public Class Form1
                     skipCounter += 1
                     Exit Sub
                 End If
+                addCounter += 1
                 If replay.ReplayBuild >= 32455 Then
                     ReplayGameEvents.Parse(replay, GetMpqArchiveFileBytes(archive, "replay.game.events"))
                 End If
@@ -201,6 +206,7 @@ Public Class Form1
     End Sub
 
     Private Sub Butt_ReadStats_Click(sender As Object, e As EventArgs) Handles Butt_ReadStats.Click
+        Lb_Added.Visible = False
         Dim dlg As New OpenFileDialog()
         dlg.Filter = "HotS Replay Stats|*.hots"
         dlg.InitialDirectory = My.Settings.ReplayPath
@@ -562,5 +568,24 @@ Public Class Form1
     Private Sub CB_Losses_CheckedChanged(sender As Object, e As EventArgs) Handles CB_Losses.CheckedChanged
         FilterReplays()
         ChartIt()
+    End Sub
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        Timer1.Interval = 10
+        Dim r As Integer = Lb_Added.ForeColor.R
+        Dim g As Integer = Lb_Added.ForeColor.G
+        Dim b As Integer = Lb_Added.ForeColor.B
+        Dim flag = False
+
+        If r < Lb_Added.BackColor.R Then r += 1 : flag = True
+        If g < Lb_Added.BackColor.R Then g += 1 : flag = True
+        If b < Lb_Added.BackColor.R Then b += 1 : flag = True
+
+        If flag Then
+            Lb_Added.ForeColor = Color.FromArgb(r, g, b)
+        Else
+            Timer1.Stop()
+        End If
+
     End Sub
 End Class

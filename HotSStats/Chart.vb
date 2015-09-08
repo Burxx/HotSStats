@@ -535,7 +535,6 @@ Module Chart
     Public Sub ChartIt()
         Dim ct = ChartType()
         If ct <> Nothing Then DrawChart(ct)
-
     End Sub
 
     Public Function ChartType() As ChartCategoryTypes
