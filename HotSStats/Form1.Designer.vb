@@ -47,6 +47,7 @@ Partial Class Form1
         Me.DD_ChartData = New System.Windows.Forms.ComboBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Grp_Filter = New System.Windows.Forms.GroupBox()
+        Me.DD_OtherPlayer = New System.Windows.Forms.ComboBox()
         Me.CB_Losses = New System.Windows.Forms.CheckBox()
         Me.CB_Wins = New System.Windows.Forms.CheckBox()
         Me.PB_Date = New System.Windows.Forms.PictureBox()
@@ -59,7 +60,7 @@ Partial Class Form1
         Me.lb_ReplaysLoaded = New System.Windows.Forms.Label()
         Me.Lb_Added = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.DD_OtherPlayer = New System.Windows.Forms.ComboBox()
+        Me.CB_OtherOrder = New System.Windows.Forms.CheckBox()
         Me.DD_Map = New HotSStats.DropdownListbox()
         Me.DD_Heroes = New HotSStats.DropdownListbox()
         CType(Me.Bar_MinLength, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -93,7 +94,7 @@ Partial Class Form1
         Me.DD_GameType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.DD_GameType.FormattingEnabled = True
         Me.DD_GameType.Items.AddRange(New Object() {"Game Mode", "Against A.I.", "QuickMatch", "Hero League", "Team League"})
-        Me.DD_GameType.Location = New System.Drawing.Point(12, 85)
+        Me.DD_GameType.Location = New System.Drawing.Point(7, 85)
         Me.DD_GameType.Margin = New System.Windows.Forms.Padding(5)
         Me.DD_GameType.Name = "DD_GameType"
         Me.DD_GameType.Size = New System.Drawing.Size(221, 28)
@@ -102,7 +103,7 @@ Partial Class Form1
         'Lb_ReplayCount
         '
         Me.Lb_ReplayCount.AutoSize = True
-        Me.Lb_ReplayCount.Location = New System.Drawing.Point(8, 116)
+        Me.Lb_ReplayCount.Location = New System.Drawing.Point(3, 116)
         Me.Lb_ReplayCount.Margin = New System.Windows.Forms.Padding(5, 0, 5, 0)
         Me.Lb_ReplayCount.Name = "Lb_ReplayCount"
         Me.Lb_ReplayCount.Size = New System.Drawing.Size(79, 20)
@@ -138,7 +139,7 @@ Partial Class Form1
         'LB_Wins
         '
         Me.LB_Wins.AutoSize = True
-        Me.LB_Wins.Location = New System.Drawing.Point(8, 135)
+        Me.LB_Wins.Location = New System.Drawing.Point(3, 135)
         Me.LB_Wins.Margin = New System.Windows.Forms.Padding(5, 0, 5, 0)
         Me.LB_Wins.Name = "LB_Wins"
         Me.LB_Wins.Size = New System.Drawing.Size(57, 20)
@@ -148,7 +149,7 @@ Partial Class Form1
         'LB_Winrate
         '
         Me.LB_Winrate.AutoSize = True
-        Me.LB_Winrate.Location = New System.Drawing.Point(97, 135)
+        Me.LB_Winrate.Location = New System.Drawing.Point(92, 135)
         Me.LB_Winrate.Margin = New System.Windows.Forms.Padding(5, 0, 5, 0)
         Me.LB_Winrate.Name = "LB_Winrate"
         Me.LB_Winrate.Size = New System.Drawing.Size(36, 20)
@@ -305,6 +306,7 @@ Partial Class Form1
         '
         Me.Grp_Filter.AutoSize = True
         Me.Grp_Filter.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.Grp_Filter.Controls.Add(Me.CB_OtherOrder)
         Me.Grp_Filter.Controls.Add(Me.DD_OtherPlayer)
         Me.Grp_Filter.Controls.Add(Me.CB_Losses)
         Me.Grp_Filter.Controls.Add(Me.CB_Wins)
@@ -324,7 +326,7 @@ Partial Class Form1
         Me.Grp_Filter.Controls.Add(Me.DD_GameType)
         Me.Grp_Filter.Controls.Add(Me.Bar_MinLength)
         Me.Grp_Filter.Controls.Add(Me.Lb_Time)
-        Me.Grp_Filter.Location = New System.Drawing.Point(168, 5)
+        Me.Grp_Filter.Location = New System.Drawing.Point(169, 4)
         Me.Grp_Filter.Margin = New System.Windows.Forms.Padding(3, 3, 3, 0)
         Me.Grp_Filter.Name = "Grp_Filter"
         Me.Grp_Filter.Padding = New System.Windows.Forms.Padding(3, 0, 3, 0)
@@ -334,10 +336,18 @@ Partial Class Form1
         Me.Grp_Filter.Text = "        Replay Filter"
         Me.Grp_Filter.Visible = False
         '
+        'DD_OtherPlayer
+        '
+        Me.DD_OtherPlayer.FormattingEnabled = True
+        Me.DD_OtherPlayer.Location = New System.Drawing.Point(7, 55)
+        Me.DD_OtherPlayer.Name = "DD_OtherPlayer"
+        Me.DD_OtherPlayer.Size = New System.Drawing.Size(221, 28)
+        Me.DD_OtherPlayer.TabIndex = 29
+        '
         'CB_Losses
         '
         Me.CB_Losses.AutoSize = True
-        Me.CB_Losses.Location = New System.Drawing.Point(487, 57)
+        Me.CB_Losses.Location = New System.Drawing.Point(489, 57)
         Me.CB_Losses.Name = "CB_Losses"
         Me.CB_Losses.Size = New System.Drawing.Size(79, 24)
         Me.CB_Losses.TabIndex = 27
@@ -347,7 +357,7 @@ Partial Class Form1
         'CB_Wins
         '
         Me.CB_Wins.AutoSize = True
-        Me.CB_Wins.Location = New System.Drawing.Point(487, 27)
+        Me.CB_Wins.Location = New System.Drawing.Point(489, 27)
         Me.CB_Wins.Name = "CB_Wins"
         Me.CB_Wins.Size = New System.Drawing.Size(63, 24)
         Me.CB_Wins.TabIndex = 26
@@ -375,7 +385,7 @@ Partial Class Form1
         'DD_PlayerNames
         '
         Me.DD_PlayerNames.FormattingEnabled = True
-        Me.DD_PlayerNames.Location = New System.Drawing.Point(12, 25)
+        Me.DD_PlayerNames.Location = New System.Drawing.Point(7, 25)
         Me.DD_PlayerNames.Name = "DD_PlayerNames"
         Me.DD_PlayerNames.Size = New System.Drawing.Size(221, 28)
         Me.DD_PlayerNames.TabIndex = 21
@@ -393,7 +403,7 @@ Partial Class Form1
         'Pic_Filter
         '
         Me.Pic_Filter.Image = CType(resources.GetObject("Pic_Filter.Image"), System.Drawing.Image)
-        Me.Pic_Filter.Location = New System.Drawing.Point(180, 2)
+        Me.Pic_Filter.Location = New System.Drawing.Point(176, 2)
         Me.Pic_Filter.Name = "Pic_Filter"
         Me.Pic_Filter.Size = New System.Drawing.Size(24, 24)
         Me.Pic_Filter.TabIndex = 25
@@ -435,19 +445,26 @@ Partial Class Form1
         'Timer1
         '
         '
-        'DD_OtherPlayer
+        'CB_OtherOrder
         '
-        Me.DD_OtherPlayer.FormattingEnabled = True
-        Me.DD_OtherPlayer.Location = New System.Drawing.Point(12, 55)
-        Me.DD_OtherPlayer.Name = "DD_OtherPlayer"
-        Me.DD_OtherPlayer.Size = New System.Drawing.Size(221, 28)
-        Me.DD_OtherPlayer.TabIndex = 29
+        Me.CB_OtherOrder.Appearance = System.Windows.Forms.Appearance.Button
+        Me.CB_OtherOrder.Checked = True
+        Me.CB_OtherOrder.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CB_OtherOrder.FlatAppearance.BorderSize = 0
+        Me.CB_OtherOrder.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.CB_OtherOrder.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.CB_OtherOrder.Image = CType(resources.GetObject("CB_OtherOrder.Image"), System.Drawing.Image)
+        Me.CB_OtherOrder.Location = New System.Drawing.Point(230, 59)
+        Me.CB_OtherOrder.Name = "CB_OtherOrder"
+        Me.CB_OtherOrder.Size = New System.Drawing.Size(19, 19)
+        Me.CB_OtherOrder.TabIndex = 30
+        Me.CB_OtherOrder.UseVisualStyleBackColor = True
         '
         'DD_Map
         '
         Me.DD_Map.FormattingEnabled = True
         Me.DD_Map.ItemHeight = 20
-        Me.DD_Map.Location = New System.Drawing.Point(258, 27)
+        Me.DD_Map.Location = New System.Drawing.Point(262, 27)
         Me.DD_Map.Name = "DD_Map"
         Me.DD_Map.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple
         Me.DD_Map.Size = New System.Drawing.Size(221, 24)
@@ -457,7 +474,7 @@ Partial Class Form1
         '
         Me.DD_Heroes.FormattingEnabled = True
         Me.DD_Heroes.ItemHeight = 20
-        Me.DD_Heroes.Location = New System.Drawing.Point(258, 57)
+        Me.DD_Heroes.Location = New System.Drawing.Point(262, 57)
         Me.DD_Heroes.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
         Me.DD_Heroes.Name = "DD_Heroes"
         Me.DD_Heroes.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple
@@ -537,4 +554,5 @@ Partial Class Form1
     Friend WithEvents Lb_Added As Label
     Friend WithEvents Timer1 As Timer
     Friend WithEvents DD_OtherPlayer As ComboBox
+    Friend WithEvents CB_OtherOrder As CheckBox
 End Class

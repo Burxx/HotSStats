@@ -246,12 +246,15 @@ Public Class Form1
         ChartIt()
     End Sub
 
-    Sub FilterReplays()
+    Sub FilterReplays(Optional finished As Boolean = True)
         If Not LoadingComplete Then Exit Sub
         ReplayList.selected = 0
         ReplayList.Wins = 0
+        Dim computer As New Regex(".* \d{1,2}$")
+        Dim Names As New Dictionary(Of String, Integer)
 
         For Each rp In ReplayList.Stats
+            rp.isSelected = True
             Select Case DD_GameType.SelectedIndex
                 Case 1
                     If Not (rp.Gamemode = GameMode.QuickMatch AndAlso (rp.Teams(0).Humans < 5 OrElse rp.Teams(1).Humans < 5)) Then
@@ -298,6 +301,16 @@ Public Class Form1
             If CB_Wins.Checked AndAlso Not CB_Losses.Checked AndAlso Not rp.isWinner Then rp.isSelected = False : Continue For
             If CB_Losses.Checked AndAlso Not CB_Wins.Checked AndAlso rp.isWinner Then rp.isSelected = False : Continue For
 
+            If PlayerName <> "" Then
+                If rp.playerFound Then
+                    If rp.isWinner Then ReplayList.Wins += 1
+                Else
+                    rp.isSelected = False
+                    Continue For
+                End If
+            End If
+
+
             If DD_OtherPlayer.SelectedIndex > 0 Then
                 Dim otherPlayerFound = False
                 For Each t In rp.Teams
@@ -309,21 +322,49 @@ Public Class Form1
                     rp.isSelected = False
                     Continue For
                 End If
-            End If
+            Else
 
-            If PlayerName <> "" Then
-                If rp.playerFound Then
-                    If rp.isWinner Then ReplayList.Wins += 1
-                Else
-                    rp.isSelected = False
-                    Continue For
-                End If
             End If
+            For Each team In rp.Teams
+                For Each player In team.Players
+                    If computer.IsMatch(player.Name) Then
+                    Else
+                        If Not Names.ContainsKey(player.Name) Then
+                            Names.Add(player.Name, 1)
+                        Else
+                            Names(player.Name) += 1
+                        End If
+                    End If
+                Next
+            Next
 
-            rp.isSelected = True
-            ReplayList.selected += 1
+            If rp.isSelected Then ReplayList.selected += 1
 
         Next
+        If finished AndAlso Names.Count > 0 Then
+            IndexChanged = True
+            DD_OtherPlayer.Items.Clear()
+            DD_OtherPlayer.Items.Add("Games played with/against ...")
+            DD_OtherPlayer.SelectedIndex = 0
+            If OtherPlayerByName Then
+
+                For Each n In Names.OrderBy(Function(x) x.Key)
+                    If n.Key <> PlayerName Then
+                        DD_OtherPlayer.Items.Add(n.Key + " (" + n.Value.ToString + ")")
+                        If n.Key = OtherPlayerName Then DD_OtherPlayer.SelectedIndex = DD_OtherPlayer.Items.Count - 1
+                    End If
+                Next
+            Else
+                For Each n In Names.OrderBy(Function(x) (10000000 - x.Value).ToString("0000000") + x.Key)
+                    If n.Key <> PlayerName Then
+                        DD_OtherPlayer.Items.Add(n.Key + " (" + n.Value.ToString + ")")
+                        If n.Key = OtherPlayerName Then DD_OtherPlayer.SelectedIndex = DD_OtherPlayer.Items.Count - 1
+                    End If
+                Next
+            End If
+            IndexChanged = False
+        End If
+
         Lb_ReplayCount.Text = ReplayList.selected.ToString + " replays filtered"
         LB_Wins.Text = ReplayList.Wins.ToString + " Wins"
         If ReplayList.selected > 0 Then
@@ -342,6 +383,7 @@ Public Class Form1
         Dim name As New Regex("^(.*) \(\d+\)$")
         PlayerName = name.Match(CStr(DD_PlayerNames.SelectedItem)).Groups(1).Value
         UpdatePlayerInfo()
+        FilterReplays()
         ChartIt()
     End Sub
 
@@ -465,16 +507,27 @@ Public Class Form1
         DD_OtherPlayer.Items.Add("Stats for Player ...")
         DD_OtherPlayer.Items.Clear()
         DD_OtherPlayer.Items.Add("Games played with/against ...")
+        DD_OtherPlayer.SelectedIndex = 0
 
         '        For Each n In Names.OrderBy(Function(x) (10000000 - x.Value).ToString("0000000") + x.Key)
         For Each n In Names.OrderBy(Function(x) x.Key)
             DD_PlayerNames.Items.Add(n.Key + " (" + n.Value.ToString + ")")
-            DD_OtherPlayer.Items.Add(n.Key + " (" + n.Value.ToString + ")")
+            If OtherPlayerByName Then
+                DD_OtherPlayer.Items.Add(n.Key + " (" + n.Value.ToString + ")")
+                If n.Key = OtherPlayerName Then DD_OtherPlayer.SelectedIndex = DD_OtherPlayer.Items.Count - 1
+            End If
         Next
+        If Not OtherPlayerByName Then
+            For Each n In Names.OrderBy(Function(x) (10000000 - x.Value).ToString("0000000") + x.Key)
+                DD_OtherPlayer.Items.Add(n.Key + " (" + n.Value.ToString + ")")
+                If n.Key = OtherPlayerName Then DD_OtherPlayer.SelectedIndex = DD_OtherPlayer.Items.Count - 1
+            Next
+        End If
         'DD_PlayerNames.SelectedIndex = 0
         DD_PlayerNames.SelectedItem = maxName + " (" + max.ToString + ")"
-        DD_OtherPlayer.SelectedIndex = 0
     End Sub
+
+
 
     Private Sub DD_Heroes_SelectedIndexChanged(sender As Object, e As EventArgs)
         FilterReplays()
@@ -483,14 +536,14 @@ Public Class Form1
     Private Sub Bar_MinLength_Scroll(sender As Object, e As EventArgs) Handles Bar_MinLength.Scroll
         If Bar_MaxLength.Value < Bar_MinLength.Value Then Bar_MaxLength.Value = Bar_MinLength.Value
         DisplayLength()
-        FilterReplays()
+        FilterReplays(False)
         ChartIt()
     End Sub
 
     Private Sub Bar_MaxLength_Scroll(sender As Object, e As EventArgs) Handles Bar_MaxLength.Scroll
         If Bar_MinLength.Value > Bar_MaxLength.Value Then Bar_MinLength.Value = Bar_MaxLength.Value
         DisplayLength()
-        FilterReplays()
+        FilterReplays(False)
         ChartIt()
     End Sub
 
@@ -512,14 +565,14 @@ Public Class Form1
     Private Sub Bar_MinTime_Scroll(sender As Object, e As EventArgs) Handles Bar_MinDate.Scroll
         If Bar_MaxDate.Value < Bar_MinDate.Value Then Bar_MaxDate.Value = Bar_MinDate.Value
         DisplayDate()
-        FilterReplays()
+        FilterReplays(False)
         ChartIt()
     End Sub
 
     Private Sub Bar_MaxTime_Scroll(sender As Object, e As EventArgs) Handles Bar_MaxDate.Scroll
         If Bar_MinDate.Value > Bar_MaxDate.Value Then Bar_MinDate.Value = Bar_MaxDate.Value
         DisplayDate()
-        FilterReplays()
+        FilterReplays(False)
         ChartIt()
     End Sub
 
@@ -617,7 +670,9 @@ Public Class Form1
 
     End Sub
 
+    Private IndexChanged As Boolean = False
     Private Sub DD_OtherPlayer_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DD_OtherPlayer.SelectedIndexChanged
+        If IndexChanged Then Return
         Dim name As New Regex("^(.*) \(\d+\)$")
         If DD_OtherPlayer.SelectedIndex > 0 Then
             OtherPlayerName = name.Match(CStr(DD_OtherPlayer.SelectedItem)).Groups(1).Value
@@ -626,5 +681,30 @@ Public Class Form1
         End If
         FilterReplays()
         ChartIt()
+    End Sub
+
+    Private Sub Bar_MinDate_MouseUp(sender As Object, e As MouseEventArgs) Handles Bar_MinDate.MouseUp
+        FilterReplays()
+    End Sub
+
+    Private Sub Bar_MaxDate_MouseUp(sender As Object, e As MouseEventArgs) Handles Bar_MaxDate.MouseUp
+        FilterReplays()
+    End Sub
+
+    Private Sub Bar_MaxLength_MouseUp(sender As Object, e As MouseEventArgs) Handles Bar_MaxLength.MouseUp
+        FilterReplays()
+    End Sub
+
+    Private Sub Bar_MinLength_MouseUp(sender As Object, e As MouseEventArgs) Handles Bar_MinLength.MouseUp
+        FilterReplays()
+    End Sub
+
+    Dim OtherPlayerByName As Boolean = True
+
+
+    Private Sub CB_OtherOrder_CheckedChanged(sender As Object, e As EventArgs) Handles CB_OtherOrder.CheckedChanged
+        OtherPlayerByName = CB_OtherOrder.Checked
+        FilterReplays()
+
     End Sub
 End Class

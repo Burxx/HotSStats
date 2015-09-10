@@ -375,15 +375,16 @@ Module Chart
                 ReplayValues(Category).Players5 += 1
         End Select
 
-        If Not ReplayValues(Category).Heroes.ContainsKey(Replay.Hero) Then
-            ReplayValues(Category).Heroes.Add(Replay.Hero, 1)
-            If Not allHeroesPlayed.Contains(Replay.Hero) Then
-                allHeroesPlayed.Add(Replay.Hero)
+        If Replay.Hero IsNot Nothing Then
+            If Not ReplayValues(Category).Heroes.ContainsKey(Replay.Hero) Then
+                ReplayValues(Category).Heroes.Add(Replay.Hero, 1)
+                If Not allHeroesPlayed.Contains(Replay.Hero) Then
+                    allHeroesPlayed.Add(Replay.Hero)
+                End If
+            Else
+                ReplayValues(Category).Heroes(Replay.Hero) += 1
             End If
-        Else
-            ReplayValues(Category).Heroes(Replay.Hero) += 1
         End If
-
 
         ' Hero Role
         Select Case AllHeroProperties.Role(Replay.Hero)
