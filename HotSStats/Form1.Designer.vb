@@ -47,6 +47,7 @@ Partial Class Form1
         Me.DD_ChartData = New System.Windows.Forms.ComboBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Grp_Filter = New System.Windows.Forms.GroupBox()
+        Me.CB_OtherOrder = New System.Windows.Forms.CheckBox()
         Me.DD_OtherPlayer = New System.Windows.Forms.ComboBox()
         Me.CB_Losses = New System.Windows.Forms.CheckBox()
         Me.CB_Wins = New System.Windows.Forms.CheckBox()
@@ -60,7 +61,6 @@ Partial Class Form1
         Me.lb_ReplaysLoaded = New System.Windows.Forms.Label()
         Me.Lb_Added = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.CB_OtherOrder = New System.Windows.Forms.CheckBox()
         Me.DD_Map = New HotSStats.DropdownListbox()
         Me.DD_Heroes = New HotSStats.DropdownListbox()
         CType(Me.Bar_MinLength, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -336,6 +336,21 @@ Partial Class Form1
         Me.Grp_Filter.Text = "        Replay Filter"
         Me.Grp_Filter.Visible = False
         '
+        'CB_OtherOrder
+        '
+        Me.CB_OtherOrder.Appearance = System.Windows.Forms.Appearance.Button
+        Me.CB_OtherOrder.Checked = True
+        Me.CB_OtherOrder.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CB_OtherOrder.FlatAppearance.BorderSize = 0
+        Me.CB_OtherOrder.FlatAppearance.CheckedBackColor = System.Drawing.Color.Black
+        Me.CB_OtherOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.CB_OtherOrder.Image = CType(resources.GetObject("CB_OtherOrder.Image"), System.Drawing.Image)
+        Me.CB_OtherOrder.Location = New System.Drawing.Point(230, 59)
+        Me.CB_OtherOrder.Name = "CB_OtherOrder"
+        Me.CB_OtherOrder.Size = New System.Drawing.Size(19, 19)
+        Me.CB_OtherOrder.TabIndex = 30
+        Me.CB_OtherOrder.UseVisualStyleBackColor = True
+        '
         'DD_OtherPlayer
         '
         Me.DD_OtherPlayer.FormattingEnabled = True
@@ -444,21 +459,6 @@ Partial Class Form1
         '
         'Timer1
         '
-        '
-        'CB_OtherOrder
-        '
-        Me.CB_OtherOrder.Appearance = System.Windows.Forms.Appearance.Button
-        Me.CB_OtherOrder.Checked = True
-        Me.CB_OtherOrder.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CB_OtherOrder.FlatAppearance.BorderSize = 0
-        Me.CB_OtherOrder.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.CB_OtherOrder.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.CB_OtherOrder.Image = CType(resources.GetObject("CB_OtherOrder.Image"), System.Drawing.Image)
-        Me.CB_OtherOrder.Location = New System.Drawing.Point(230, 59)
-        Me.CB_OtherOrder.Name = "CB_OtherOrder"
-        Me.CB_OtherOrder.Size = New System.Drawing.Size(19, 19)
-        Me.CB_OtherOrder.TabIndex = 30
-        Me.CB_OtherOrder.UseVisualStyleBackColor = True
         '
         'DD_Map
         '

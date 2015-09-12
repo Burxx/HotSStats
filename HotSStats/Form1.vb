@@ -39,11 +39,11 @@ Public Class Form1
     End Sub
 
 
-    Sub updateReplay(total As Integer, skipCounter As Integer)
+    Sub updateReplay(total As Integer, skipCounter As Integer, startcount As Integer)
         Lb_ReplayCount.Text = ReplayList.Stats.Count.ToString + " / " + total.ToString + " Replays"
         If skipCounter > 0 Then Lb_ReplayCount.Text += ", " + skipCounter.ToString + " skipped"
         Dim TimePassed As TimeSpan = Now - ReplayList.TimeOfLastUpdate
-        Dim TimeLeft As TimeSpan = TimeSpan.FromTicks(CLng((TimePassed).Ticks * (total - ReplayList.Stats.Count) / ReplayList.Stats.Count))
+        Dim TimeLeft As TimeSpan = TimeSpan.FromTicks(CLng((TimePassed).Ticks * (total - ReplayList.Stats.Count) / (ReplayList.Stats.Count - startcount)))
         Lb_Time.Text = "Time passed: " + TimePassed.ToString("hh\:mm\:ss") + "  Time left: " + TimeLeft.ToString("hh\:mm\:ss")
         Application.DoEvents()
     End Sub
@@ -53,6 +53,7 @@ Public Class Form1
     Private Sub Butt_ReadReplays_Click(sender As Object, e As EventArgs) Handles Butt_ReadReplays.Click
         Dim heroesAccountsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Heroes of the Storm\Accounts")
         Dim allReplays = Directory.GetFiles(heroesAccountsFolder, "*.StormReplay", SearchOption.AllDirectories)
+        Dim startCount = ReplayList.Stats.Count
         Grp_Filter.Visible = True
         Lb_Time.Visible = True
         Dim LastAddedReplay = ReplayList.DateOfLastAddedReplay
@@ -69,7 +70,7 @@ Public Class Form1
                                                          ReadReplay(currentFile)
                                                      End Sub)
                     BunchOfReplays.Clear()
-                    updateReplay(allReplays.Count, skipCounter)
+                    updateReplay(allReplays.Count, skipCounter, startCount)
                 End If
             End If
         Next
@@ -302,9 +303,7 @@ Public Class Form1
             If CB_Losses.Checked AndAlso Not CB_Wins.Checked AndAlso rp.isWinner Then rp.isSelected = False : Continue For
 
             If PlayerName <> "" Then
-                If rp.playerFound Then
-                    If rp.isWinner Then ReplayList.Wins += 1
-                Else
+                If Not rp.playerFound Then
                     rp.isSelected = False
                     Continue For
                 End If
@@ -317,14 +316,18 @@ Public Class Form1
                     For Each p In t.Players
                         If p.Name = OtherPlayerName Then otherPlayerFound = True : Exit For
                     Next
+                    If otherPlayerFound Then Exit For
                 Next
                 If Not otherPlayerFound Then
                     rp.isSelected = False
                     Continue For
                 End If
-            Else
-
             End If
+
+            If PlayerName <> "" Then
+                If rp.isWinner Then ReplayList.Wins += 1
+            End If
+
             For Each team In rp.Teams
                 For Each player In team.Players
                     If computer.IsMatch(player.Name) Then
@@ -341,29 +344,6 @@ Public Class Form1
             If rp.isSelected Then ReplayList.selected += 1
 
         Next
-        If finished AndAlso Names.Count > 0 Then
-            IndexChanged = True
-            DD_OtherPlayer.Items.Clear()
-            DD_OtherPlayer.Items.Add("Games played with/against ...")
-            DD_OtherPlayer.SelectedIndex = 0
-            If OtherPlayerByName Then
-
-                For Each n In Names.OrderBy(Function(x) x.Key)
-                    If n.Key <> PlayerName Then
-                        DD_OtherPlayer.Items.Add(n.Key + " (" + n.Value.ToString + ")")
-                        If n.Key = OtherPlayerName Then DD_OtherPlayer.SelectedIndex = DD_OtherPlayer.Items.Count - 1
-                    End If
-                Next
-            Else
-                For Each n In Names.OrderBy(Function(x) (10000000 - x.Value).ToString("0000000") + x.Key)
-                    If n.Key <> PlayerName Then
-                        DD_OtherPlayer.Items.Add(n.Key + " (" + n.Value.ToString + ")")
-                        If n.Key = OtherPlayerName Then DD_OtherPlayer.SelectedIndex = DD_OtherPlayer.Items.Count - 1
-                    End If
-                Next
-            End If
-            IndexChanged = False
-        End If
 
         Lb_ReplayCount.Text = ReplayList.selected.ToString + " replays filtered"
         LB_Wins.Text = ReplayList.Wins.ToString + " Wins"
@@ -508,22 +488,25 @@ Public Class Form1
         DD_OtherPlayer.Items.Clear()
         DD_OtherPlayer.Items.Add("Games played with/against ...")
         DD_OtherPlayer.SelectedIndex = 0
-
-        '        For Each n In Names.OrderBy(Function(x) (10000000 - x.Value).ToString("0000000") + x.Key)
+        If PlayerName Is Nothing Then PlayerName = maxName  ' after loading
         For Each n In Names.OrderBy(Function(x) x.Key)
-            DD_PlayerNames.Items.Add(n.Key + " (" + n.Value.ToString + ")")
-            If OtherPlayerByName Then
-                DD_OtherPlayer.Items.Add(n.Key + " (" + n.Value.ToString + ")")
-                If n.Key = OtherPlayerName Then DD_OtherPlayer.SelectedIndex = DD_OtherPlayer.Items.Count - 1
+            If n.Value > 1 Then
+                DD_PlayerNames.Items.Add(n.Key + " (" + n.Value.ToString + ")")
+
+                If OtherPlayerByName AndAlso n.Key <> PlayerName Then
+                    DD_OtherPlayer.Items.Add(n.Key + " (" + n.Value.ToString + ")")
+                    If n.Key = OtherPlayerName Then DD_OtherPlayer.SelectedIndex = DD_OtherPlayer.Items.Count - 1
+                End If
             End If
         Next
         If Not OtherPlayerByName Then
             For Each n In Names.OrderBy(Function(x) (10000000 - x.Value).ToString("0000000") + x.Key)
-                DD_OtherPlayer.Items.Add(n.Key + " (" + n.Value.ToString + ")")
-                If n.Key = OtherPlayerName Then DD_OtherPlayer.SelectedIndex = DD_OtherPlayer.Items.Count - 1
+                If n.Value > 1 AndAlso n.Key <> PlayerName Then
+                    DD_OtherPlayer.Items.Add(n.Key + " (" + n.Value.ToString + ")")
+                    If n.Key = OtherPlayerName Then DD_OtherPlayer.SelectedIndex = DD_OtherPlayer.Items.Count - 1
+                End If
             Next
         End If
-        'DD_PlayerNames.SelectedIndex = 0
         DD_PlayerNames.SelectedItem = maxName + " (" + max.ToString + ")"
     End Sub
 
@@ -703,8 +686,9 @@ Public Class Form1
 
 
     Private Sub CB_OtherOrder_CheckedChanged(sender As Object, e As EventArgs) Handles CB_OtherOrder.CheckedChanged
-        OtherPlayerByName = CB_OtherOrder.Checked
-        FilterReplays()
-
+        If LoadingComplete Then
+            OtherPlayerByName = CB_OtherOrder.Checked
+            ReadPlayerNames()
+        End If
     End Sub
 End Class
