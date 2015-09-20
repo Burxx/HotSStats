@@ -83,6 +83,8 @@ Module Chart
         Months
         Heroes
         Hero_Roles
+        Own_Heroes
+        Enemy_Heroes
         Attack_Type
         Maps
         Length_in_Minutes
@@ -173,7 +175,15 @@ Module Chart
         For Each rp In ReplayList.Stats
             If rp.isSelected Then
                 Category = getCategoryFromReplay(CategoryType, rp)
-                If Category IsNot Nothing Then countAllReplayValues(ReplayValues, rp, Category)
+                If Category IsNot Nothing Then
+                    If Category.GetType.Name = "String[]" Then
+                        For Each c As String In CType(Category, Array)
+                            countAllReplayValues(ReplayValues, rp, c)
+                        Next
+                    Else
+                        countAllReplayValues(ReplayValues, rp, Category)
+                    End If
+                End If
             End If
         Next
         Table = New DataTable()
@@ -271,6 +281,10 @@ Module Chart
                 Return rp.Time.ToLocalTime.Year.ToString + "-" + rp.Time.ToLocalTime.Month.ToString("00")
             Case ChartCategoryTypes.Heroes
                 Return rp.Hero
+            Case ChartCategoryTypes.Enemy_Heroes
+                Return {rp.EnemyTeam.Players(0).Hero, rp.EnemyTeam.Players(1).Hero, rp.EnemyTeam.Players(2).Hero, rp.EnemyTeam.Players(3).Hero, rp.EnemyTeam.Players(4).Hero}
+            Case ChartCategoryTypes.Own_Heroes
+                Return {rp.OwnTeam.Players(0).Hero, rp.OwnTeam.Players(1).Hero, rp.OwnTeam.Players(2).Hero, rp.OwnTeam.Players(3).Hero, rp.OwnTeam.Players(4).Hero}
             Case ChartCategoryTypes.Hero_Roles
                 Return AllHeroProperties.Role(rp.Hero).ToString
             Case ChartCategoryTypes.Attack_Type
@@ -341,7 +355,7 @@ Module Chart
         If Not ReplayValues.ContainsKey(Category) Then ReplayValues.Add(Category, New ReplayValueCounter)
         Dim PlayWithOtherPlayer = False
         If Form1.DD_OtherPlayer.SelectedIndex > 0 Then
-            If Replay.OwnTeam.Contains(OtherPlayerName) Then PlayWithOtherPlayer = True
+            If Replay.OwnTeam.ContainsPlayer(OtherPlayerName) Then PlayWithOtherPlayer = True
         End If
 
             ' Win / Loss
@@ -586,6 +600,10 @@ Module Chart
                 Return (ChartCategoryTypes.Heroes)
             Case "Hero Role"
                 Return (ChartCategoryTypes.Hero_Roles)
+            Case "Hero in Own Team"
+                Return ChartCategoryTypes.Own_Heroes
+            Case "Hero in Enemy Team"
+                Return ChartCategoryTypes.Enemy_Heroes
             Case "Attack Type"
                 Return (ChartCategoryTypes.Attack_Type)
             Case "Map"

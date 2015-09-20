@@ -309,6 +309,18 @@ Public Class Form1
                 End If
             End If
 
+            If DD_AgainstHero.SelectedIndex > 0 Then
+                If Not rp.EnemyTeam.ContainsHero(DD_AgainstHero.SelectedItem.ToString) Then
+                    rp.isSelected = False
+                    Continue For
+                End If
+            End If
+            If DD_WithHero.SelectedIndex > 0 Then
+                If Not rp.OwnTeam.ContainsHero(DD_WithHero.SelectedItem.ToString) Then
+                    rp.isSelected = False
+                    Continue For
+                End If
+            End If
 
             If DD_OtherPlayer.SelectedIndex > 0 Then
                 Dim otherPlayerFound = False
@@ -476,8 +488,16 @@ Public Class Form1
         Next
         DD_Heroes.Items.Clear()
         DD_Heroes.Items.Add("Heroes")
+        DD_WithHero.Items.Add("With ...")
+        DD_WithHero.SelectedIndex = 0
+        DD_AgainstHero.Items.Add("Against ...")
+        DD_AgainstHero.SelectedIndex = 0
         For Each h In Heroes.OrderBy(Function(x As String) x)
-            If h IsNot Nothing Then DD_Heroes.Items.Add(h)
+            If h IsNot Nothing Then
+                DD_Heroes.Items.Add(h)
+                DD_WithHero.Items.Add(h)
+                DD_AgainstHero.Items.Add(h)
+            End If
         Next
     End Sub
 
@@ -512,7 +532,7 @@ Public Class Form1
         DD_OtherPlayer.SelectedIndex = 0
         If PlayerName Is Nothing Then PlayerName = maxName  ' after loading
         For Each n In Names.OrderBy(Function(x) x.Key)
-            If (n.Value > 1 OrElse Names.Count < 100) Then
+            If (n.Value >= 1 OrElse Names.Count < 100) Then
                 DD_PlayerNames.Items.Add(n.Key + " (" + n.Value.ToString + ")")
 
                 If OtherPlayerByName AndAlso n.Key <> PlayerName Then
@@ -716,5 +736,13 @@ Public Class Form1
         End If
     End Sub
 
+    Private Sub DD_AgainstHero_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DD_AgainstHero.SelectionChangeCommitted
+        FilterReplays()
+        ChartIt()
+    End Sub
 
+    Private Sub DD_WithHero_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DD_WithHero.SelectionChangeCommitted
+        FilterReplays()
+        ChartIt()
+    End Sub
 End Class

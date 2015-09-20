@@ -45,6 +45,7 @@
         row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Nova", "Нова", "Assassin", "Ranged") : DGV_Heroes.Rows.Add(row)
         row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Raynor", "Рейнор", "Assassin", "Ranged") : DGV_Heroes.Rows.Add(row)
         row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Rehgar", "Регар", "Support", "Melee") : DGV_Heroes.Rows.Add(row)
+        row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Rexxar", "Рексар", "Warrior", "Ranged") : DGV_Heroes.Rows.Add(row)
         row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Sergeant Hammer", "Sgt Marteau,Sgt. Hammer,Sgto. Martillo,Sierżant Petarda,Сержант Кувалда,Sgt. Marreta,Sargento Maza", "Specialist", "Ranged") : DGV_Heroes.Rows.Add(row)
         row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Sonya", "Sonia,Соня", "Warrior", "Melee") : DGV_Heroes.Rows.Add(row)
         row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Stitches", "Kleiner,Balafré,Puntos,Tritacarne,Zszywaniec,Стежок,Suturino", "Warrior", "Melee") : DGV_Heroes.Rows.Add(row)

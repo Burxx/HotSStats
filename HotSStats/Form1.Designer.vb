@@ -47,6 +47,8 @@ Partial Class Form1
         Me.DD_ChartData = New System.Windows.Forms.ComboBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Grp_Filter = New System.Windows.Forms.GroupBox()
+        Me.DD_AgainstHero = New System.Windows.Forms.ComboBox()
+        Me.DD_WithHero = New System.Windows.Forms.ComboBox()
         Me.CB_OtherOrder = New System.Windows.Forms.CheckBox()
         Me.DD_OtherPlayer = New System.Windows.Forms.ComboBox()
         Me.CB_Losses = New System.Windows.Forms.CheckBox()
@@ -87,6 +89,7 @@ Partial Class Form1
         Me.Butt_ReadReplays.TabIndex = 0
         Me.Butt_ReadReplays.Text = "Add Replays"
         Me.Butt_ReadReplays.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.Butt_ReadReplays, "Add new replays (if not already loaded)")
         Me.Butt_ReadReplays.UseVisualStyleBackColor = True
         '
         'DD_GameType
@@ -121,6 +124,7 @@ Partial Class Form1
         Me.Butt_ReadStats.TabIndex = 4
         Me.Butt_ReadStats.Text = "Load Stats"
         Me.Butt_ReadStats.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.Butt_ReadStats, "Load stats from previously saved file")
         Me.Butt_ReadStats.UseVisualStyleBackColor = True
         '
         'Butt_SaveStats
@@ -134,6 +138,7 @@ Partial Class Form1
         Me.Butt_SaveStats.TabIndex = 5
         Me.Butt_SaveStats.Text = "Save Stats"
         Me.Butt_SaveStats.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.Butt_SaveStats, "Save stats to file")
         Me.Butt_SaveStats.UseVisualStyleBackColor = True
         '
         'LB_Wins
@@ -167,6 +172,7 @@ Partial Class Form1
         Me.Bar_MinLength.TabIndex = 10
         Me.Bar_MinLength.TickFrequency = 60
         Me.Bar_MinLength.TickStyle = System.Windows.Forms.TickStyle.TopLeft
+        Me.ToolTip1.SetToolTip(Me.Bar_MinLength, "Minimum game length")
         '
         'Bar_MaxLength
         '
@@ -179,6 +185,7 @@ Partial Class Form1
         Me.Bar_MaxLength.SmallChange = 60
         Me.Bar_MaxLength.TabIndex = 11
         Me.Bar_MaxLength.TickFrequency = 60
+        Me.ToolTip1.SetToolTip(Me.Bar_MaxLength, "Maximum game length")
         Me.Bar_MaxLength.Value = 10
         '
         'Lb_Length
@@ -212,6 +219,7 @@ Partial Class Form1
         Me.Bar_MaxDate.Size = New System.Drawing.Size(408, 29)
         Me.Bar_MaxDate.TabIndex = 14
         Me.Bar_MaxDate.TickFrequency = 7
+        Me.ToolTip1.SetToolTip(Me.Bar_MaxDate, "Last date")
         Me.Bar_MaxDate.Value = 10
         '
         'Bar_MinDate
@@ -224,6 +232,7 @@ Partial Class Form1
         Me.Bar_MinDate.TabIndex = 13
         Me.Bar_MinDate.TickFrequency = 7
         Me.Bar_MinDate.TickStyle = System.Windows.Forms.TickStyle.TopLeft
+        Me.ToolTip1.SetToolTip(Me.Bar_MinDate, "Earliest date")
         '
         'Chart1
         '
@@ -252,12 +261,13 @@ Partial Class Form1
         Me.DD_ChartInfo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.DD_ChartInfo.DropDownWidth = 400
         Me.DD_ChartInfo.FormattingEnabled = True
-        Me.DD_ChartInfo.Items.AddRange(New Object() {"for each ...", "Hero", "Hero Role", "Attack Type", "Map", "Day", "Week", "Month", "Weekday", "Time of Day", "Length", "Highest Tier", "Hero Level", "Team Hero Level Average", "Team Hero Level Median", "Team Hero Level Average Difference", "Team Hero Level Median Difference", "Own Team Composition", "Enemy Team Composition", "Number of Own Warriors", "Number of Own Assassins", "Number of Own Support", "Number of Own Specialists", "Number of Enemy Warriors", "Number of Enemy Assassins", "Number of Enemy Support", "Number of Enemy Specialists"})
+        Me.DD_ChartInfo.Items.AddRange(New Object() {"for each ...", "Hero", "Hero Role", "Attack Type", "Map", "Day", "Week", "Month", "Weekday", "Time of Day", "Length", "Highest Tier", "Hero Level", "Team Hero Level Average", "Team Hero Level Median", "Team Hero Level Average Difference", "Team Hero Level Median Difference", "Hero in Own Team", "Hero in Enemy Team", "Own Team Composition", "Enemy Team Composition", "Number of Own Warriors", "Number of Own Assassins", "Number of Own Support", "Number of Own Specialists", "Number of Enemy Warriors", "Number of Enemy Assassins", "Number of Enemy Support", "Number of Enemy Specialists"})
         Me.DD_ChartInfo.Location = New System.Drawing.Point(237, 32)
         Me.DD_ChartInfo.Margin = New System.Windows.Forms.Padding(5)
         Me.DD_ChartInfo.Name = "DD_ChartInfo"
         Me.DD_ChartInfo.Size = New System.Drawing.Size(221, 28)
         Me.DD_ChartInfo.TabIndex = 21
+        Me.ToolTip1.SetToolTip(Me.DD_ChartInfo, "Categories in the x-axis (each category becomes a column)")
         '
         'DD_ChartType
         '
@@ -294,6 +304,7 @@ Partial Class Form1
         Me.DD_ChartData.Name = "DD_ChartData"
         Me.DD_ChartData.Size = New System.Drawing.Size(221, 28)
         Me.DD_ChartData.TabIndex = 23
+        Me.ToolTip1.SetToolTip(Me.DD_ChartData, "Categories in the y-axis (different colors within each column)")
         '
         'PictureBox1
         '
@@ -328,6 +339,8 @@ Partial Class Form1
         Me.Grp_Filter.Controls.Add(Me.DD_GameType)
         Me.Grp_Filter.Controls.Add(Me.Bar_MinLength)
         Me.Grp_Filter.Controls.Add(Me.Lb_Time)
+        Me.Grp_Filter.Controls.Add(Me.DD_WithHero)
+        Me.Grp_Filter.Controls.Add(Me.DD_AgainstHero)
         Me.Grp_Filter.Location = New System.Drawing.Point(169, 4)
         Me.Grp_Filter.Margin = New System.Windows.Forms.Padding(3, 3, 3, 0)
         Me.Grp_Filter.Name = "Grp_Filter"
@@ -337,6 +350,30 @@ Partial Class Form1
         Me.Grp_Filter.TabStop = False
         Me.Grp_Filter.Text = "        Replay Filter"
         Me.Grp_Filter.Visible = False
+        '
+        'DD_AgainstHero
+        '
+        Me.DD_AgainstHero.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.DD_AgainstHero.DropDownWidth = 221
+        Me.DD_AgainstHero.FormattingEnabled = True
+        Me.DD_AgainstHero.Location = New System.Drawing.Point(374, 86)
+        Me.DD_AgainstHero.Margin = New System.Windows.Forms.Padding(5)
+        Me.DD_AgainstHero.Name = "DD_AgainstHero"
+        Me.DD_AgainstHero.Size = New System.Drawing.Size(109, 28)
+        Me.DD_AgainstHero.TabIndex = 32
+        Me.ToolTip1.SetToolTip(Me.DD_AgainstHero, "Games with the selected hero in the enemy team")
+        '
+        'DD_WithHero
+        '
+        Me.DD_WithHero.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.DD_WithHero.DropDownWidth = 221
+        Me.DD_WithHero.FormattingEnabled = True
+        Me.DD_WithHero.Location = New System.Drawing.Point(262, 86)
+        Me.DD_WithHero.Margin = New System.Windows.Forms.Padding(5)
+        Me.DD_WithHero.Name = "DD_WithHero"
+        Me.DD_WithHero.Size = New System.Drawing.Size(109, 28)
+        Me.DD_WithHero.TabIndex = 31
+        Me.ToolTip1.SetToolTip(Me.DD_WithHero, "Games with the selected hero in your team")
         '
         'CB_OtherOrder
         '
@@ -349,6 +386,7 @@ Partial Class Form1
         Me.CB_OtherOrder.Name = "CB_OtherOrder"
         Me.CB_OtherOrder.Size = New System.Drawing.Size(19, 19)
         Me.CB_OtherOrder.TabIndex = 30
+        Me.ToolTip1.SetToolTip(Me.CB_OtherOrder, "if checked sort alphabetically, otherwise by number of games")
         Me.CB_OtherOrder.UseVisualStyleBackColor = True
         '
         'DD_OtherPlayer
@@ -358,6 +396,7 @@ Partial Class Form1
         Me.DD_OtherPlayer.Name = "DD_OtherPlayer"
         Me.DD_OtherPlayer.Size = New System.Drawing.Size(221, 28)
         Me.DD_OtherPlayer.TabIndex = 29
+        Me.ToolTip1.SetToolTip(Me.DD_OtherPlayer, "Games with or against the selected player")
         '
         'CB_Losses
         '
@@ -367,6 +406,7 @@ Partial Class Form1
         Me.CB_Losses.Size = New System.Drawing.Size(79, 24)
         Me.CB_Losses.TabIndex = 27
         Me.CB_Losses.Text = "Losses"
+        Me.ToolTip1.SetToolTip(Me.CB_Losses, "Show only games lost")
         Me.CB_Losses.UseVisualStyleBackColor = True
         '
         'CB_Wins
@@ -377,6 +417,7 @@ Partial Class Form1
         Me.CB_Wins.Size = New System.Drawing.Size(63, 24)
         Me.CB_Wins.TabIndex = 26
         Me.CB_Wins.Text = "Wins"
+        Me.ToolTip1.SetToolTip(Me.CB_Wins, "Show only games won")
         Me.CB_Wins.UseVisualStyleBackColor = True
         '
         'PB_Date
@@ -404,6 +445,7 @@ Partial Class Form1
         Me.DD_PlayerNames.Name = "DD_PlayerNames"
         Me.DD_PlayerNames.Size = New System.Drawing.Size(221, 28)
         Me.DD_PlayerNames.TabIndex = 21
+        Me.ToolTip1.SetToolTip(Me.DD_PlayerNames, "View stats for the selected player")
         '
         'Lb_Time
         '
@@ -555,4 +597,6 @@ Partial Class Form1
     Friend WithEvents Timer1 As Timer
     Friend WithEvents DD_OtherPlayer As ComboBox
     Friend WithEvents CB_OtherOrder As CheckBox
+    Friend WithEvents DD_AgainstHero As ComboBox
+    Friend WithEvents DD_WithHero As ComboBox
 End Class

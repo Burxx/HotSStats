@@ -43,9 +43,15 @@ End Class
     Public Players As New List(Of ReplayStatsPlayer)
     Public Milestones As New List(Of TimeSpan)
     Public Humans As Integer
-    Public Function Contains(name As String) As Boolean
+    Public Function ContainsPlayer(name As String) As Boolean
         For Each p In Players
             If p.Name = name Then Return True
+        Next
+        Return False
+    End Function
+    Public Function ContainsHero(name As String) As Boolean
+        For Each p In Players
+            If p.Hero = name Then Return True
         Next
         Return False
     End Function
