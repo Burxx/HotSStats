@@ -205,6 +205,7 @@ Partial Class Form1
         'Bar_MaxDate
         '
         Me.Bar_MaxDate.AutoSize = False
+        Me.Bar_MaxDate.LargeChange = 7
         Me.Bar_MaxDate.Location = New System.Drawing.Point(572, 124)
         Me.Bar_MaxDate.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
         Me.Bar_MaxDate.Name = "Bar_MaxDate"
@@ -215,6 +216,7 @@ Partial Class Form1
         '
         'Bar_MinDate
         '
+        Me.Bar_MinDate.LargeChange = 7
         Me.Bar_MinDate.Location = New System.Drawing.Point(572, 95)
         Me.Bar_MinDate.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
         Me.Bar_MinDate.Name = "Bar_MinDate"
@@ -339,8 +341,6 @@ Partial Class Form1
         'CB_OtherOrder
         '
         Me.CB_OtherOrder.Appearance = System.Windows.Forms.Appearance.Button
-        Me.CB_OtherOrder.Checked = True
-        Me.CB_OtherOrder.CheckState = System.Windows.Forms.CheckState.Checked
         Me.CB_OtherOrder.FlatAppearance.BorderSize = 0
         Me.CB_OtherOrder.FlatAppearance.CheckedBackColor = System.Drawing.Color.Black
         Me.CB_OtherOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat

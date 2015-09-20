@@ -232,7 +232,7 @@ Public Class Form1
             Pic_Filter.BringToFront()
             lb_ReplaysLoaded.Text = ReplayList.Stats.Count.ToString + " replays loaded"
             ReadAll()
-            FilterReplays()
+            'FilterReplays()
         Else
             Grp_Chart.Visible = False
             Grp_Filter.Visible = False
@@ -242,7 +242,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub CB_GameType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DD_GameType.SelectedIndexChanged
+    Private Sub CB_GameType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DD_GameType.SelectionChangeCommitted
         FilterReplays()
         ChartIt()
     End Sub
@@ -345,6 +345,28 @@ Public Class Form1
 
         Next
 
+        'IndexChanged = True
+        DD_OtherPlayer.Items.Clear()
+        DD_OtherPlayer.Items.Add("Games played with/against ...")
+        DD_OtherPlayer.SelectedIndex = 0
+        If Not OtherPlayerByName Then
+            For Each n In Names.OrderBy(Function(x) x.Key)
+                If (n.Value > 1 OrElse Names.Count < 100) AndAlso n.Key <> PlayerName Then
+                    DD_OtherPlayer.Items.Add(n.Key + " (" + n.Value.ToString + ")")
+                    If n.Key = OtherPlayerName Then DD_OtherPlayer.SelectedIndex = DD_OtherPlayer.Items.Count - 1
+                End If
+            Next
+        Else
+            For Each n In Names.OrderBy(Function(x) (10000000 - x.Value).ToString("0000000") + x.Key)
+                If (n.Value > 1 OrElse Names.Count < 100) AndAlso n.Key <> PlayerName Then
+                    DD_OtherPlayer.Items.Add(n.Key + " (" + n.Value.ToString + ")")
+                    If n.Key = OtherPlayerName Then DD_OtherPlayer.SelectedIndex = DD_OtherPlayer.Items.Count - 1
+                End If
+            Next
+        End If
+        'IndexChanged = False
+
+
         Lb_ReplayCount.Text = ReplayList.selected.ToString + " replays filtered"
         LB_Wins.Text = ReplayList.Wins.ToString + " Wins"
         If ReplayList.selected > 0 Then
@@ -359,7 +381,7 @@ Public Class Form1
         FilterReplays()
     End Sub
 
-    Private Sub DD_PlayerNames_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DD_PlayerNames.SelectedIndexChanged
+    Private Sub DD_PlayerNames_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DD_PlayerNames.SelectionChangeCommitted
         Dim name As New Regex("^(.*) \(\d+\)$")
         PlayerName = name.Match(CStr(DD_PlayerNames.SelectedItem)).Groups(1).Value
         UpdatePlayerInfo()
@@ -390,15 +412,15 @@ Public Class Form1
     End Sub
 
     Sub ReadAll()
+        readLengths()
+        readDates()
         ReadMaps()
         ReadHeroes()
         ReadPlayerNames()
         UpdatePlayerInfo()
-        readLength()
-        readTime()
     End Sub
 
-    Sub readLength()
+    Sub readLengths()
         Dim minLength As TimeSpan = TimeSpan.MaxValue
         Dim maxLength As TimeSpan = TimeSpan.MinValue
         For Each rp In ReplayList.Stats
@@ -413,7 +435,7 @@ Public Class Form1
         DisplayLength()
     End Sub
 
-    Sub readTime()
+    Sub readDates()
         Dim minTime As DateTime = DateTime.MaxValue
         Dim maxTime As DateTime = DateTime.MinValue
         For Each rp In ReplayList.Stats
@@ -484,13 +506,13 @@ Public Class Form1
             Next
         Next
         DD_PlayerNames.Items.Clear()
-        DD_OtherPlayer.Items.Add("Stats for Player ...")
+        DD_PlayerNames.Items.Add("Stats for Player ...")
         DD_OtherPlayer.Items.Clear()
         DD_OtherPlayer.Items.Add("Games played with/against ...")
         DD_OtherPlayer.SelectedIndex = 0
         If PlayerName Is Nothing Then PlayerName = maxName  ' after loading
         For Each n In Names.OrderBy(Function(x) x.Key)
-            If n.Value > 1 Then
+            If (n.Value > 1 OrElse Names.Count < 100) Then
                 DD_PlayerNames.Items.Add(n.Key + " (" + n.Value.ToString + ")")
 
                 If OtherPlayerByName AndAlso n.Key <> PlayerName Then
@@ -501,7 +523,7 @@ Public Class Form1
         Next
         If Not OtherPlayerByName Then
             For Each n In Names.OrderBy(Function(x) (10000000 - x.Value).ToString("0000000") + x.Key)
-                If n.Value > 1 AndAlso n.Key <> PlayerName Then
+                If (n.Value > 1 OrElse Names.Count < 100) AndAlso n.Key <> PlayerName Then
                     DD_OtherPlayer.Items.Add(n.Key + " (" + n.Value.ToString + ")")
                     If n.Key = OtherPlayerName Then DD_OtherPlayer.SelectedIndex = DD_OtherPlayer.Items.Count - 1
                 End If
@@ -540,7 +562,7 @@ Public Class Form1
     Sub DisplayDate()
         Dim minTime = New DateTime(Bar_MinDate.Value * 864000000000)
         Dim maxTime = New DateTime(Bar_MaxDate.Value * 864000000000)
-        Lb_Date.Text = "Time: " + minTime.ToShortDateString + " - " + maxTime.ToShortDateString
+        Lb_Date.Text = "Date: " + minTime.ToShortDateString + " - " + maxTime.ToShortDateString
         PB_Date.Left = CInt(Lb_Date.Left + (Lb_Date.Width - Lb_Date.CreateGraphics.MeasureString(Lb_Date.Text, Lb_Date.Font).Width) / 2 - 24)
 
     End Sub
@@ -605,8 +627,9 @@ Public Class Form1
         DD_Map.Shrink()
     End Sub
 
-    Private Sub DD_ChartData_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DD_ChartData.SelectedIndexChanged
+    Private Sub DD_ChartData_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DD_ChartData.SelectionChangeCommitted
         If LoadingComplete AndAlso Chart.Table IsNot Nothing Then
+            If DD_OtherPlayer.SelectedIndex = 0 And DD_ChartData.SelectedIndex = 2 Then DD_ChartData.SelectedIndex = 1
             'ChartIt()
             addChartSeries(Chart1, Chart.Table, CType(DD_ChartData.SelectedItem, String))
             formatChart(Chart1, Chart.Table, ChartType)
@@ -653,14 +676,15 @@ Public Class Form1
 
     End Sub
 
-    Private IndexChanged As Boolean = False
-    Private Sub DD_OtherPlayer_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DD_OtherPlayer.SelectedIndexChanged
-        If IndexChanged Then Return
+    'Private IndexChanged As Boolean = False
+    Private Sub DD_OtherPlayer_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DD_OtherPlayer.SelectionChangeCommitted
+        'If IndexChanged Then IndexChanged = False : Return
         Dim name As New Regex("^(.*) \(\d+\)$")
         If DD_OtherPlayer.SelectedIndex > 0 Then
             OtherPlayerName = name.Match(CStr(DD_OtherPlayer.SelectedItem)).Groups(1).Value
         Else
             OtherPlayerName = ""
+            If DD_ChartData.SelectedIndex = 2 Then DD_ChartData.SelectedIndex = 1
         End If
         FilterReplays()
         ChartIt()
@@ -691,4 +715,6 @@ Public Class Form1
             ReadPlayerNames()
         End If
     End Sub
+
+
 End Class
