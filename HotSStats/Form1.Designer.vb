@@ -47,22 +47,38 @@ Partial Class Form1
         Me.DD_ChartData = New System.Windows.Forms.ComboBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Grp_Filter = New System.Windows.Forms.GroupBox()
-        Me.DD_AgainstHero = New System.Windows.Forms.ComboBox()
-        Me.DD_WithHero = New System.Windows.Forms.ComboBox()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.CB_OtherOrder = New System.Windows.Forms.CheckBox()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.DD_OtherPlayer = New System.Windows.Forms.ComboBox()
+        Me.CB_ChatTexts = New System.Windows.Forms.ComboBox()
         Me.CB_Losses = New System.Windows.Forms.CheckBox()
         Me.CB_Wins = New System.Windows.Forms.CheckBox()
         Me.PB_Date = New System.Windows.Forms.PictureBox()
         Me.PB_Length = New System.Windows.Forms.PictureBox()
         Me.DD_PlayerNames = New System.Windows.Forms.ComboBox()
         Me.Lb_Time = New System.Windows.Forms.Label()
+        Me.DD_WithHero = New System.Windows.Forms.ComboBox()
+        Me.DD_AgainstHero = New System.Windows.Forms.ComboBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.Butt_LoadReplays = New System.Windows.Forms.Button()
         Me.Pic_Filter = New System.Windows.Forms.PictureBox()
         Me.Butt_Settings = New System.Windows.Forms.Button()
         Me.lb_ReplaysLoaded = New System.Windows.Forms.Label()
         Me.Lb_Added = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.Lb_GameInfo = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.TB_Chat = New System.Windows.Forms.TextBox()
+        Me.Lb_Players = New System.Windows.Forms.Label()
+        Me.DD_Replays = New System.Windows.Forms.ComboBox()
+        Me.Butt_DeleteTexts = New System.Windows.Forms.Button()
+        Me.CB_WholeWords = New System.Windows.Forms.CheckBox()
         Me.DD_Map = New HotSStats.DropdownListbox()
         Me.DD_Heroes = New HotSStats.DropdownListbox()
         CType(Me.Bar_MinLength, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -73,21 +89,26 @@ Partial Class Form1
         Me.Grp_Chart.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Grp_Filter.SuspendLayout()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PB_Date, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PB_Length, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Pic_Filter, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabControl1.SuspendLayout()
+        Me.TabPage2.SuspendLayout()
+        Me.TabPage1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Butt_ReadReplays
         '
+        Me.Butt_ReadReplays.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Butt_ReadReplays.Image = CType(resources.GetObject("Butt_ReadReplays.Image"), System.Drawing.Image)
         Me.Butt_ReadReplays.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Butt_ReadReplays.Location = New System.Drawing.Point(10, 59)
+        Me.Butt_ReadReplays.Location = New System.Drawing.Point(10, 109)
         Me.Butt_ReadReplays.Margin = New System.Windows.Forms.Padding(5)
         Me.Butt_ReadReplays.Name = "Butt_ReadReplays"
-        Me.Butt_ReadReplays.Size = New System.Drawing.Size(143, 40)
-        Me.Butt_ReadReplays.TabIndex = 0
-        Me.Butt_ReadReplays.Text = "Add Replays"
+        Me.Butt_ReadReplays.Size = New System.Drawing.Size(143, 48)
+        Me.Butt_ReadReplays.TabIndex = 2
+        Me.Butt_ReadReplays.Text = "Add All New" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Replays"
         Me.Butt_ReadReplays.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.ToolTip1.SetToolTip(Me.Butt_ReadReplays, "Add new replays (if not already loaded)")
         Me.Butt_ReadReplays.UseVisualStyleBackColor = True
@@ -117,11 +138,11 @@ Partial Class Form1
         '
         Me.Butt_ReadStats.Image = CType(resources.GetObject("Butt_ReadStats.Image"), System.Drawing.Image)
         Me.Butt_ReadStats.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Butt_ReadStats.Location = New System.Drawing.Point(10, 9)
+        Me.Butt_ReadStats.Location = New System.Drawing.Point(10, 7)
         Me.Butt_ReadStats.Margin = New System.Windows.Forms.Padding(5)
         Me.Butt_ReadStats.Name = "Butt_ReadStats"
-        Me.Butt_ReadStats.Size = New System.Drawing.Size(143, 40)
-        Me.Butt_ReadStats.TabIndex = 4
+        Me.Butt_ReadStats.Size = New System.Drawing.Size(143, 48)
+        Me.Butt_ReadStats.TabIndex = 0
         Me.Butt_ReadStats.Text = "Load Stats"
         Me.Butt_ReadStats.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.ToolTip1.SetToolTip(Me.Butt_ReadStats, "Load stats from previously saved file")
@@ -131,11 +152,11 @@ Partial Class Form1
         '
         Me.Butt_SaveStats.Image = CType(resources.GetObject("Butt_SaveStats.Image"), System.Drawing.Image)
         Me.Butt_SaveStats.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Butt_SaveStats.Location = New System.Drawing.Point(10, 109)
+        Me.Butt_SaveStats.Location = New System.Drawing.Point(10, 58)
         Me.Butt_SaveStats.Margin = New System.Windows.Forms.Padding(5)
         Me.Butt_SaveStats.Name = "Butt_SaveStats"
-        Me.Butt_SaveStats.Size = New System.Drawing.Size(143, 40)
-        Me.Butt_SaveStats.TabIndex = 5
+        Me.Butt_SaveStats.Size = New System.Drawing.Size(143, 48)
+        Me.Butt_SaveStats.TabIndex = 1
         Me.Butt_SaveStats.Text = "Save Stats"
         Me.Butt_SaveStats.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.ToolTip1.SetToolTip(Me.Butt_SaveStats, "Save stats to file")
@@ -246,13 +267,14 @@ Partial Class Form1
         Legend1.BackColor = System.Drawing.SystemColors.Control
         Legend1.Name = "Legend1"
         Me.Chart1.Legends.Add(Legend1)
-        Me.Chart1.Location = New System.Drawing.Point(-1, 258)
+        Me.Chart1.Location = New System.Drawing.Point(0, 0)
+        Me.Chart1.Margin = New System.Windows.Forms.Padding(0)
         Me.Chart1.Name = "Chart1"
         Series1.ChartArea = "ChartArea1"
         Series1.Legend = "Legend1"
         Series1.Name = "Series1"
         Me.Chart1.Series.Add(Series1)
-        Me.Chart1.Size = New System.Drawing.Size(1157, 371)
+        Me.Chart1.Size = New System.Drawing.Size(1344, 297)
         Me.Chart1.TabIndex = 16
         Me.Chart1.Text = "Chart1"
         '
@@ -319,8 +341,15 @@ Partial Class Form1
         '
         Me.Grp_Filter.AutoSize = True
         Me.Grp_Filter.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.Grp_Filter.Controls.Add(Me.CB_WholeWords)
+        Me.Grp_Filter.Controls.Add(Me.Butt_DeleteTexts)
+        Me.Grp_Filter.Controls.Add(Me.DD_Map)
+        Me.Grp_Filter.Controls.Add(Me.DD_Heroes)
+        Me.Grp_Filter.Controls.Add(Me.Label1)
         Me.Grp_Filter.Controls.Add(Me.CB_OtherOrder)
+        Me.Grp_Filter.Controls.Add(Me.PictureBox2)
         Me.Grp_Filter.Controls.Add(Me.DD_OtherPlayer)
+        Me.Grp_Filter.Controls.Add(Me.CB_ChatTexts)
         Me.Grp_Filter.Controls.Add(Me.CB_Losses)
         Me.Grp_Filter.Controls.Add(Me.CB_Wins)
         Me.Grp_Filter.Controls.Add(Me.PB_Date)
@@ -330,8 +359,6 @@ Partial Class Form1
         Me.Grp_Filter.Controls.Add(Me.LB_Winrate)
         Me.Grp_Filter.Controls.Add(Me.Bar_MaxLength)
         Me.Grp_Filter.Controls.Add(Me.LB_Wins)
-        Me.Grp_Filter.Controls.Add(Me.DD_Map)
-        Me.Grp_Filter.Controls.Add(Me.DD_Heroes)
         Me.Grp_Filter.Controls.Add(Me.Lb_Date)
         Me.Grp_Filter.Controls.Add(Me.Lb_ReplayCount)
         Me.Grp_Filter.Controls.Add(Me.Bar_MaxDate)
@@ -345,35 +372,20 @@ Partial Class Form1
         Me.Grp_Filter.Margin = New System.Windows.Forms.Padding(3, 3, 3, 0)
         Me.Grp_Filter.Name = "Grp_Filter"
         Me.Grp_Filter.Padding = New System.Windows.Forms.Padding(3, 0, 3, 0)
-        Me.Grp_Filter.Size = New System.Drawing.Size(986, 174)
+        Me.Grp_Filter.Size = New System.Drawing.Size(1166, 174)
         Me.Grp_Filter.TabIndex = 24
         Me.Grp_Filter.TabStop = False
         Me.Grp_Filter.Text = "        Replay Filter"
         Me.Grp_Filter.Visible = False
         '
-        'DD_AgainstHero
+        'Label1
         '
-        Me.DD_AgainstHero.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.DD_AgainstHero.DropDownWidth = 221
-        Me.DD_AgainstHero.FormattingEnabled = True
-        Me.DD_AgainstHero.Location = New System.Drawing.Point(374, 86)
-        Me.DD_AgainstHero.Margin = New System.Windows.Forms.Padding(5)
-        Me.DD_AgainstHero.Name = "DD_AgainstHero"
-        Me.DD_AgainstHero.Size = New System.Drawing.Size(109, 28)
-        Me.DD_AgainstHero.TabIndex = 32
-        Me.ToolTip1.SetToolTip(Me.DD_AgainstHero, "Games with the selected hero in the enemy team")
-        '
-        'DD_WithHero
-        '
-        Me.DD_WithHero.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.DD_WithHero.DropDownWidth = 221
-        Me.DD_WithHero.FormattingEnabled = True
-        Me.DD_WithHero.Location = New System.Drawing.Point(262, 86)
-        Me.DD_WithHero.Margin = New System.Windows.Forms.Padding(5)
-        Me.DD_WithHero.Name = "DD_WithHero"
-        Me.DD_WithHero.Size = New System.Drawing.Size(109, 28)
-        Me.DD_WithHero.TabIndex = 31
-        Me.ToolTip1.SetToolTip(Me.DD_WithHero, "Games with the selected hero in your team")
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(1032, 14)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(85, 20)
+        Me.Label1.TabIndex = 34
+        Me.Label1.Text = "Chat Texts"
         '
         'CB_OtherOrder
         '
@@ -389,6 +401,15 @@ Partial Class Form1
         Me.ToolTip1.SetToolTip(Me.CB_OtherOrder, "if checked sort alphabetically, otherwise by number of games")
         Me.CB_OtherOrder.UseVisualStyleBackColor = True
         '
+        'PictureBox2
+        '
+        Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
+        Me.PictureBox2.Location = New System.Drawing.Point(1004, 11)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(24, 24)
+        Me.PictureBox2.TabIndex = 33
+        Me.PictureBox2.TabStop = False
+        '
         'DD_OtherPlayer
         '
         Me.DD_OtherPlayer.FormattingEnabled = True
@@ -397,6 +418,16 @@ Partial Class Form1
         Me.DD_OtherPlayer.Size = New System.Drawing.Size(221, 28)
         Me.DD_OtherPlayer.TabIndex = 29
         Me.ToolTip1.SetToolTip(Me.DD_OtherPlayer, "Games with or against the selected player")
+        '
+        'CB_ChatTexts
+        '
+        Me.CB_ChatTexts.FormattingEnabled = True
+        Me.CB_ChatTexts.Items.AddRange(New Object() {"", "Any Chat", "No Chat"})
+        Me.CB_ChatTexts.Location = New System.Drawing.Point(1004, 38)
+        Me.CB_ChatTexts.Name = "CB_ChatTexts"
+        Me.CB_ChatTexts.Size = New System.Drawing.Size(121, 28)
+        Me.CB_ChatTexts.TabIndex = 33
+        Me.ToolTip1.SetToolTip(Me.CB_ChatTexts, "Find replays with a certain text in chat messages (e.g. Noob)")
         '
         'CB_Losses
         '
@@ -457,6 +488,44 @@ Partial Class Form1
         Me.Lb_Time.TabIndex = 28
         Me.Lb_Time.Text = "Time:"
         '
+        'DD_WithHero
+        '
+        Me.DD_WithHero.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.DD_WithHero.DropDownWidth = 221
+        Me.DD_WithHero.FormattingEnabled = True
+        Me.DD_WithHero.Location = New System.Drawing.Point(262, 86)
+        Me.DD_WithHero.Margin = New System.Windows.Forms.Padding(5)
+        Me.DD_WithHero.Name = "DD_WithHero"
+        Me.DD_WithHero.Size = New System.Drawing.Size(109, 28)
+        Me.DD_WithHero.TabIndex = 31
+        Me.ToolTip1.SetToolTip(Me.DD_WithHero, "Games with the selected hero in your team")
+        '
+        'DD_AgainstHero
+        '
+        Me.DD_AgainstHero.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.DD_AgainstHero.DropDownWidth = 221
+        Me.DD_AgainstHero.FormattingEnabled = True
+        Me.DD_AgainstHero.Location = New System.Drawing.Point(374, 86)
+        Me.DD_AgainstHero.Margin = New System.Windows.Forms.Padding(5)
+        Me.DD_AgainstHero.Name = "DD_AgainstHero"
+        Me.DD_AgainstHero.Size = New System.Drawing.Size(109, 28)
+        Me.DD_AgainstHero.TabIndex = 32
+        Me.ToolTip1.SetToolTip(Me.DD_AgainstHero, "Games with the selected hero in the enemy team")
+        '
+        'Butt_LoadReplays
+        '
+        Me.Butt_LoadReplays.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Butt_LoadReplays.Image = CType(resources.GetObject("Butt_LoadReplays.Image"), System.Drawing.Image)
+        Me.Butt_LoadReplays.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Butt_LoadReplays.Location = New System.Drawing.Point(10, 160)
+        Me.Butt_LoadReplays.Name = "Butt_LoadReplays"
+        Me.Butt_LoadReplays.Size = New System.Drawing.Size(143, 48)
+        Me.Butt_LoadReplays.TabIndex = 3
+        Me.Butt_LoadReplays.Text = "Add Replays"
+        Me.Butt_LoadReplays.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.Butt_LoadReplays, "Pick replays to add")
+        Me.Butt_LoadReplays.UseVisualStyleBackColor = True
+        '
         'Pic_Filter
         '
         Me.Pic_Filter.Image = CType(resources.GetObject("Pic_Filter.Image"), System.Drawing.Image)
@@ -471,11 +540,11 @@ Partial Class Form1
         '
         Me.Butt_Settings.Image = CType(resources.GetObject("Butt_Settings.Image"), System.Drawing.Image)
         Me.Butt_Settings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Butt_Settings.Location = New System.Drawing.Point(10, 159)
+        Me.Butt_Settings.Location = New System.Drawing.Point(10, 211)
         Me.Butt_Settings.Margin = New System.Windows.Forms.Padding(5)
         Me.Butt_Settings.Name = "Butt_Settings"
-        Me.Butt_Settings.Size = New System.Drawing.Size(143, 40)
-        Me.Butt_Settings.TabIndex = 26
+        Me.Butt_Settings.Size = New System.Drawing.Size(143, 48)
+        Me.Butt_Settings.TabIndex = 4
         Me.Butt_Settings.Text = "Settings"
         Me.Butt_Settings.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.Butt_Settings.UseVisualStyleBackColor = True
@@ -483,7 +552,7 @@ Partial Class Form1
         'lb_ReplaysLoaded
         '
         Me.lb_ReplaysLoaded.AutoSize = True
-        Me.lb_ReplaysLoaded.Location = New System.Drawing.Point(14, 224)
+        Me.lb_ReplaysLoaded.Location = New System.Drawing.Point(6, 263)
         Me.lb_ReplaysLoaded.Margin = New System.Windows.Forms.Padding(5, 0, 5, 0)
         Me.lb_ReplaysLoaded.Name = "lb_ReplaysLoaded"
         Me.lb_ReplaysLoaded.Size = New System.Drawing.Size(133, 20)
@@ -501,6 +570,140 @@ Partial Class Form1
         '
         'Timer1
         '
+        '
+        'TabControl1
+        '
+        Me.TabControl1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TabControl1.Controls.Add(Me.TabPage2)
+        Me.TabControl1.Controls.Add(Me.TabPage1)
+        Me.TabControl1.Location = New System.Drawing.Point(0, 295)
+        Me.TabControl1.Margin = New System.Windows.Forms.Padding(0)
+        Me.TabControl1.Name = "TabControl1"
+        Me.TabControl1.Padding = New System.Drawing.Point(0, 0)
+        Me.TabControl1.SelectedIndex = 0
+        Me.TabControl1.Size = New System.Drawing.Size(1348, 417)
+        Me.TabControl1.TabIndex = 32
+        '
+        'TabPage2
+        '
+        Me.TabPage2.BackColor = System.Drawing.SystemColors.Control
+        Me.TabPage2.Controls.Add(Me.Chart1)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 29)
+        Me.TabPage2.Margin = New System.Windows.Forms.Padding(0)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Size = New System.Drawing.Size(1340, 384)
+        Me.TabPage2.TabIndex = 1
+        Me.TabPage2.Text = "Chart"
+        '
+        'TabPage1
+        '
+        Me.TabPage1.BackColor = System.Drawing.SystemColors.Control
+        Me.TabPage1.Controls.Add(Me.Lb_GameInfo)
+        Me.TabPage1.Controls.Add(Me.Label4)
+        Me.TabPage1.Controls.Add(Me.Label3)
+        Me.TabPage1.Controls.Add(Me.Label2)
+        Me.TabPage1.Controls.Add(Me.TB_Chat)
+        Me.TabPage1.Controls.Add(Me.Lb_Players)
+        Me.TabPage1.Controls.Add(Me.DD_Replays)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 29)
+        Me.TabPage1.Margin = New System.Windows.Forms.Padding(0)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Size = New System.Drawing.Size(1295, 384)
+        Me.TabPage1.TabIndex = 0
+        Me.TabPage1.Text = "Details"
+        '
+        'Lb_GameInfo
+        '
+        Me.Lb_GameInfo.AutoSize = True
+        Me.Lb_GameInfo.Location = New System.Drawing.Point(308, 90)
+        Me.Lb_GameInfo.Name = "Lb_GameInfo"
+        Me.Lb_GameInfo.Size = New System.Drawing.Size(0, 20)
+        Me.Lb_GameInfo.TabIndex = 6
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(308, 70)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(85, 20)
+        Me.Label4.TabIndex = 5
+        Me.Label4.Text = "Game Info"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(10, 3)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(123, 20)
+        Me.Label3.TabIndex = 4
+        Me.Label3.Text = "Filtered Replays"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(626, 3)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(120, 20)
+        Me.Label2.TabIndex = 3
+        Me.Label2.Text = "Chat Messages"
+        '
+        'TB_Chat
+        '
+        Me.TB_Chat.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TB_Chat.Location = New System.Drawing.Point(630, 26)
+        Me.TB_Chat.Multiline = True
+        Me.TB_Chat.Name = "TB_Chat"
+        Me.TB_Chat.ReadOnly = True
+        Me.TB_Chat.ScrollBars = System.Windows.Forms.ScrollBars.Both
+        Me.TB_Chat.Size = New System.Drawing.Size(663, 319)
+        Me.TB_Chat.TabIndex = 2
+        '
+        'Lb_Players
+        '
+        Me.Lb_Players.AutoSize = True
+        Me.Lb_Players.Location = New System.Drawing.Point(10, 70)
+        Me.Lb_Players.Name = "Lb_Players"
+        Me.Lb_Players.Size = New System.Drawing.Size(60, 20)
+        Me.Lb_Players.TabIndex = 1
+        Me.Lb_Players.Text = "Players"
+        '
+        'DD_Replays
+        '
+        Me.DD_Replays.DropDownHeight = 200
+        Me.DD_Replays.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.DD_Replays.DropDownWidth = 600
+        Me.DD_Replays.FormattingEnabled = True
+        Me.DD_Replays.IntegralHeight = False
+        Me.DD_Replays.Location = New System.Drawing.Point(14, 26)
+        Me.DD_Replays.MaxDropDownItems = 5
+        Me.DD_Replays.Name = "DD_Replays"
+        Me.DD_Replays.Size = New System.Drawing.Size(507, 28)
+        Me.DD_Replays.TabIndex = 0
+        '
+        'Butt_DeleteTexts
+        '
+        Me.Butt_DeleteTexts.Image = CType(resources.GetObject("Butt_DeleteTexts.Image"), System.Drawing.Image)
+        Me.Butt_DeleteTexts.Location = New System.Drawing.Point(1128, 36)
+        Me.Butt_DeleteTexts.Name = "Butt_DeleteTexts"
+        Me.Butt_DeleteTexts.Size = New System.Drawing.Size(32, 32)
+        Me.Butt_DeleteTexts.TabIndex = 35
+        Me.ToolTip1.SetToolTip(Me.Butt_DeleteTexts, "Remove texts from dropdown list")
+        Me.Butt_DeleteTexts.UseVisualStyleBackColor = True
+        '
+        'CB_WholeWords
+        '
+        Me.CB_WholeWords.AutoSize = True
+        Me.CB_WholeWords.Location = New System.Drawing.Point(1004, 68)
+        Me.CB_WholeWords.Name = "CB_WholeWords"
+        Me.CB_WholeWords.Size = New System.Drawing.Size(123, 24)
+        Me.CB_WholeWords.TabIndex = 36
+        Me.CB_WholeWords.Text = "Whole Words"
+        Me.ToolTip1.SetToolTip(Me.CB_WholeWords, "Only search for whole words (searching for ""hi"" won't find ""high"")")
+        Me.CB_WholeWords.UseVisualStyleBackColor = True
         '
         'DD_Map
         '
@@ -527,17 +730,18 @@ Partial Class Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1156, 641)
+        Me.ClientSize = New System.Drawing.Size(1348, 715)
+        Me.Controls.Add(Me.Butt_LoadReplays)
         Me.Controls.Add(Me.Lb_Added)
         Me.Controls.Add(Me.Pic_Filter)
         Me.Controls.Add(Me.Grp_Filter)
         Me.Controls.Add(Me.lb_ReplaysLoaded)
         Me.Controls.Add(Me.Butt_Settings)
         Me.Controls.Add(Me.Grp_Chart)
-        Me.Controls.Add(Me.Chart1)
         Me.Controls.Add(Me.Butt_SaveStats)
         Me.Controls.Add(Me.Butt_ReadStats)
         Me.Controls.Add(Me.Butt_ReadReplays)
+        Me.Controls.Add(Me.TabControl1)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(5)
@@ -553,9 +757,14 @@ Partial Class Form1
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Grp_Filter.ResumeLayout(False)
         Me.Grp_Filter.PerformLayout()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PB_Date, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PB_Length, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Pic_Filter, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabControl1.ResumeLayout(False)
+        Me.TabPage2.ResumeLayout(False)
+        Me.TabPage1.ResumeLayout(False)
+        Me.TabPage1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -599,4 +808,20 @@ Partial Class Form1
     Friend WithEvents CB_OtherOrder As CheckBox
     Friend WithEvents DD_AgainstHero As ComboBox
     Friend WithEvents DD_WithHero As ComboBox
+    Friend WithEvents Butt_LoadReplays As Button
+    Friend WithEvents CB_ChatTexts As ComboBox
+    Friend WithEvents Label1 As Label
+    Friend WithEvents PictureBox2 As PictureBox
+    Friend WithEvents TabControl1 As TabControl
+    Friend WithEvents TabPage1 As TabPage
+    Friend WithEvents TabPage2 As TabPage
+    Friend WithEvents DD_Replays As ComboBox
+    Friend WithEvents TB_Chat As TextBox
+    Friend WithEvents Lb_Players As Label
+    Friend WithEvents Lb_GameInfo As Label
+    Friend WithEvents Label4 As Label
+    Friend WithEvents Label3 As Label
+    Friend WithEvents Label2 As Label
+    Friend WithEvents CB_WholeWords As CheckBox
+    Friend WithEvents Butt_DeleteTexts As Button
 End Class

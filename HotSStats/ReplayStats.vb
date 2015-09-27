@@ -1,4 +1,6 @@
 ﻿Imports Heroes.ReplayParser
+Imports System.Collections
+Imports System.Text
 
 <Serializable()> Public Class Replays
     Public TimeOfLastUpdate As DateTime
@@ -12,6 +14,7 @@
 End Class
 
 <Serializable()> Public Class ReplayStats
+    Public Filename As String
     Public isWinner As Boolean
     Public Hero As String
     Public playerFound As Boolean
@@ -23,6 +26,7 @@ End Class
     Public MapWidth As Integer
     Public MapHeight As Integer
     Public Teams(1) As ReplayStatsTeam
+    Public Messages As New List(Of ChatMessage)
     Sub New()
         Teams(0) = New ReplayStatsTeam
         Teams(1) = New ReplayStatsTeam
@@ -34,6 +38,21 @@ End Class
     Public Function EnemyTeam() As ReplayStatsTeam
         If isWinner = Teams(0).isWinner Then Return Teams(1)
         Return Teams(0)
+    End Function
+    Public Function PlayerName(index As Integer) As String
+        For Each t In Teams
+            For Each p In t.Players
+                If p.Number = index Then Return p.Name
+            Next
+        Next
+        Return ""
+    End Function
+    Public Function Chat() As String
+        Dim SB As New StringBuilder
+        For Each msg In Messages
+            SB.AppendLine("(→" + msg.MessageTarget.ToString + ") " + msg.Timestamp.ToString + " " + PlayerName(msg.PlayerId) + ": " + msg.Message)
+        Next
+        Return SB.ToString
     End Function
 
 End Class
@@ -62,5 +81,6 @@ End Class
     Public Hero As String
     Public Level As Integer
     Public Type As PlayerType
+    Public Number As Integer
     Public Autoselect As Boolean
 End Class

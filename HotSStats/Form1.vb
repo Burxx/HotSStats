@@ -5,6 +5,7 @@ Imports System.Runtime.Serialization.Formatters.Binary
 Imports System.Globalization
 Imports System.Text.RegularExpressions
 Imports System.ComponentModel
+Imports System.Text
 
 Public Class Form1
 
@@ -23,6 +24,13 @@ Public Class Form1
         My.Settings.Reload()
         If My.Settings.Heroes Is Nothing Then
             Settings.ShowDialog()
+        End If
+        If My.Settings.ChatTexts IsNot Nothing AndAlso My.Settings.ChatTexts.Count > 0 Then
+            CB_ChatTexts.Items.Clear()
+
+            For Each t In My.Settings.ChatTexts
+                CB_ChatTexts.Items.Add(t)
+            Next
         End If
         LoadingComplete = True
     End Sub
@@ -123,7 +131,7 @@ Public Class Form1
                 ReplayTrackerEvents.Parse(replay, GetMpqArchiveFileBytes(archive, "replay.tracker.events"))
                 ReplayAttributeEvents.Parse(replay, GetMpqArchiveFileBytes(archive, "replay.attributes.events"))
                 If replay.GameMode = GameMode.TryMe OrElse replay.GameMode = GameMode.Unknown Then
-                    Debug.Print(replay.GameMode.ToString)
+                    'Debug.Print(replay.GameMode.ToString)
                     skipCounter += 1
                     Exit Sub
                 End If
@@ -132,9 +140,15 @@ Public Class Form1
                     ReplayGameEvents.Parse(replay, GetMpqArchiveFileBytes(archive, "replay.game.events"))
                 End If
                 ReplayServerBattlelobby.Parse(replay, GetMpqArchiveFileBytes(archive, "replay.server.battlelobby"))
+                ReplayMessageEvents.Parse(replay, GetMpqArchiveFileBytes(archive, "replay.message.events"))
             End Using
 
             Dim Rep As New ReplayStats
+            If InStr(rp, "Multiplayer") > 0 Then
+                Rep.Filename = Mid(rp, 12 + InStr(rp, "Multiplayer"))
+            Else
+                Rep.Filename = rp
+            End If
             ReplayList.Stats.Add(Rep)
             If File.GetLastWriteTime(rp) > ReplayList.DateOfLastAddedReplay Then ReplayList.DateOfLastAddedReplay = File.GetLastWriteTime(rp)
             Rep.Gamemode = replay.GameMode
@@ -144,7 +158,12 @@ Public Class Form1
                 Rep.Time = replay.Timestamp
             End If
             Rep.Length = replay.ReplayLength
-
+            Rep.Messages = CType(replay.ChatMessages, List(Of ChatMessage))
+            If replay.Players(0).PlayerType = PlayerType.Computer AndAlso replay.Players(4).PlayerType = PlayerType.Computer Then
+                For Each msg In Rep.Messages
+                    msg.PlayerId += 5
+                Next
+            End If
             Rep.Map = replay.Map
             Rep.MapWidth = replay.MapSize.X
             Rep.MapHeight = replay.MapSize.Y
@@ -157,7 +176,9 @@ Public Class Form1
                 Rep.Teams(1 - replay.Players(0).Team).isWinner = True
             End If
 
-            For Each player In replay.Players.OrderBy(Function(i) i.Team)
+            'For Each player In replay.Players.OrderBy(Function(i) i.Team)
+            For i = 0 To replay.Players.Count - 1
+                Dim player = replay.Players(i)
                 Dim t As ReplayStatsTeam = Rep.Teams(player.Team)
                 Dim p As New ReplayStatsPlayer
                 t.Players.Add(p)
@@ -166,6 +187,7 @@ Public Class Form1
                 p.Level = player.CharacterLevel
                 p.Type = player.PlayerType
                 p.Autoselect = player.IsAutoSelect
+                p.Number = i
                 If p.Type = PlayerType.Human Then
                     t.Humans += 1
                 End If
@@ -254,8 +276,9 @@ Public Class Form1
         ReplayList.Wins = 0
         Dim computer As New Regex(".* \d{1,2}$")
         Dim Names As New Dictionary(Of String, Integer)
+        DD_Replays.Items.Clear()
 
-        For Each rp In ReplayList.Stats
+        For Each rp In ReplayList.Stats.OrderBy(Function(i) i.Time)
             rp.isSelected = True
             Select Case DD_GameType.SelectedIndex
                 Case 1
@@ -322,7 +345,26 @@ Public Class Form1
                     Continue For
                 End If
             End If
-
+            If CB_ChatTexts.Text <> "" Then
+                If CB_ChatTexts.SelectedIndex = 1 Then
+                    If rp.Messages.Count = 0 Then rp.isSelected = False : Continue For
+                ElseIf CB_ChatTexts.SelectedIndex = 2 Then
+                    If rp.Messages.Count > 0 Then rp.isSelected = False : Continue For
+                Else
+                    rp.isSelected = False
+                    If Not CB_WholeWords.Checked Then
+                        For Each msg In rp.Messages
+                            If msg.Message.ToLower.Contains(CB_ChatTexts.Text.ToLower) Then rp.isSelected = True : Exit For
+                        Next
+                    Else
+                        Dim regex As New Regex("\b" + CB_ChatTexts.Text + "\b")
+                        For Each msg In rp.Messages
+                            If regex.IsMatch(msg.Message) Then rp.isSelected = True : Exit For
+                        Next
+                    End If
+                    If Not rp.isSelected Then Continue For
+                End If
+            End If
             If DD_OtherPlayer.SelectedIndex > 0 Then
                 Dim otherPlayerFound = False
                 For Each t In rp.Teams
@@ -354,7 +396,10 @@ Public Class Form1
                 Next
             Next
 
-            If rp.isSelected Then ReplayList.selected += 1
+            If rp.isSelected Then
+                ReplayList.selected += 1
+                DD_Replays.Items.Add(rp.Time.ToString + " " + rp.Filename)
+            End If
 
         Next
 
@@ -668,6 +713,11 @@ Public Class Form1
 
     Private Sub Form1_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         Globals.Closing = True
+        Dim texts As New Specialized.StringCollection
+        For Each t As String In CB_ChatTexts.Items
+            texts.Add(t)
+        Next
+        My.Settings.ChatTexts = texts
     End Sub
 
     Private Sub CB_Wins_CheckedChanged(sender As Object, e As EventArgs) Handles CB_Wins.CheckedChanged
@@ -747,5 +797,87 @@ Public Class Form1
     Private Sub DD_WithHero_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DD_WithHero.SelectionChangeCommitted
         FilterReplays()
         ChartIt()
+    End Sub
+
+    Dim LastFolder As String = ""
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Butt_LoadReplays.Click
+        Dim dlg As New OpenFileDialog
+        dlg.Multiselect = True
+        If LastFolder <> "" Then
+            dlg.InitialDirectory = LastFolder
+        Else
+            Dim heroesAccountsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Heroes of the Storm\Accounts")
+            dlg.InitialDirectory = heroesAccountsFolder
+        End If
+        dlg.Filter = "Heroes of the Storm Replays|*.StormReplay"
+        If dlg.ShowDialog <> DialogResult.Cancel Then
+            LastFolder = Path.GetDirectoryName(dlg.FileNames(0))
+            For Each rp In dlg.FileNames
+                ReadReplay(rp)
+            Next
+            FilterReplays()
+            ChartIt()
+            UpdateAfterLoading()
+        End If
+
+    End Sub
+
+
+    Private Sub CB_Words_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles CB_ChatTexts.SelectionChangeCommitted
+        CB_ChatTexts.Text = CStr(CB_ChatTexts.SelectedItem)
+        FilterReplays()
+        ChartIt()
+    End Sub
+
+    Private Sub CB_Words_KeyPress(sender As Object, e As KeyPressEventArgs) Handles CB_ChatTexts.KeyPress
+        If Asc(e.KeyChar) = Keys.Enter Then
+            If CB_ChatTexts.Text.Trim <> "" Then
+                Dim found = False
+                For Each w As String In CB_ChatTexts.Items
+                    If w.ToLower = CB_ChatTexts.Text.ToLower.Trim Then found = True : Exit For
+                Next
+                If Not found Then CB_ChatTexts.Items.Add(CB_ChatTexts.Text.Trim)
+
+            End If
+            FilterReplays()
+            ChartIt()
+        End If
+    End Sub
+
+
+    Private Sub DD_Replays_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles DD_Replays.SelectionChangeCommitted
+        For Each rp In ReplayList.Stats
+            If DD_Replays.SelectedItem.ToString = rp.Time.ToString + " " + rp.Filename Then
+                Dim sb As New StringBuilder
+                TB_Chat.Text = rp.Chat
+                sb.AppendLine("Own Team " + IIf(rp.OwnTeam.isWinner, "(Winner)", "(Loser)").ToString)
+                For Each p In rp.OwnTeam.Players
+                    If p.Type = PlayerType.Human Then
+                        sb.AppendLine("  " + p.Name + ": " + p.Hero + " (" + p.Level.ToString + ")")
+                    Else
+                        sb.AppendLine("  " + p.Name + ": " + p.Hero)
+                    End If
+                Next
+                sb.AppendLine()
+                sb.AppendLine("Enemy Team " + IIf(rp.EnemyTeam.isWinner, "(Winner)", "(Loser)").ToString)
+                For Each p In rp.EnemyTeam.Players
+                    If p.Type = PlayerType.Human Then
+                        sb.AppendLine("  " + p.Name + ": " + p.Hero + " (" + p.Level.ToString + ")")
+                    Else
+                        sb.AppendLine("  " + p.Name + ": " + p.Hero)
+                    End If
+                Next
+                Lb_Players.Text = sb.ToString
+                Lb_GameInfo.Text = IIf(rp.isWinner, "Win", "Loss").ToString + vbCrLf + "Length: " + rp.Length.ToString + vbCrLf + rp.Map
+            End If
+        Next
+    End Sub
+
+    Private Sub Butt_DeleteTexts_Click(sender As Object, e As EventArgs) Handles Butt_DeleteTexts.Click
+        CB_ChatTexts.Items.Clear()
+        CB_ChatTexts.Items.Add("")
+        CB_ChatTexts.Items.Add("Any Chat")
+        CB_ChatTexts.Items.Add("No Chat")
+
     End Sub
 End Class

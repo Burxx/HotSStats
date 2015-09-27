@@ -21,49 +21,58 @@
             {
                 using (var reader = new BinaryReader(stream))
                 {
-                    int totalTime = 0;
-                    while (reader.BaseStream.Position < reader.BaseStream.Length)
+                    try
                     {
-                        // While not EOF
-                        var message = new ChatMessage();
-
-                        var time = ParseTimestamp(reader);
-                        message.PlayerId = reader.ReadByte();
-
-                        totalTime += time;
-                        var opCode = reader.ReadByte();
-
-                        if (opCode == 0x80)
-                            reader.ReadBytes(4);
-                        else if (opCode == 0x83)
-                            reader.ReadBytes(8);
-                        else if (opCode == 2 && message.PlayerId <= 10)
+                        int totalTime = 0;
+                        while (reader.BaseStream.Position < reader.BaseStream.Length)
                         {
-                            if (message.PlayerId == 80)
-                                continue;
+                            // While not EOF
+                            var message = new ChatMessage();
 
-                            message.MessageTarget = (ChatMessageTarget)(opCode & 7);
-                            var length = reader.ReadByte();
+                            var time = ParseTimestamp(reader);
+                            message.PlayerId = reader.ReadByte();
 
-                            if ((opCode & 8) == 8)
-                                length += 64;
+                            totalTime += time;
+                            var opCode = reader.ReadByte();
 
-                            if ((opCode & 16) == 16)
-                                length += 128;
+                            if (opCode == 0x80)
+                                reader.ReadBytes(4);
+                            else if (opCode == 0x83)
+                                reader.ReadBytes(8);
+                            else if (opCode == 2 && message.PlayerId <= 10)
+                            {
+                                if (message.PlayerId == 80)
+                                    continue;
 
-                            message.Message = Encoding.UTF8.GetString(reader.ReadBytes(length));
+                                message.MessageTarget = (ChatMessageTarget)(opCode & 7);
+                                var length = reader.ReadByte();
+
+                                if ((opCode & 8) == 8)
+                                    length += 64;
+
+                                if ((opCode & 16) == 16)
+                                    length += 128;
+
+                                message.Message = Encoding.UTF8.GetString(reader.ReadBytes(length));
+                            }
+                            else
+                            {
+
+                            }
+
+                            if (message.Message != null)
+                            {
+                                message.Timestamp = new TimeSpan(0, 0, (int)Math.Round(totalTime / 16.0));
+                                messages.Add(message);
+                            }
                         }
-                        else
-                        {
-                            
-                        }
 
-                        if (message.Message != null)
-                        {
-                            message.Timestamp = new TimeSpan(0, 0, (int)Math.Round(totalTime / 16.0));
-                            messages.Add(message);
-                        }
                     }
+                    catch (Exception ex)
+                    {
+
+                    }
+
                 }
             }
 

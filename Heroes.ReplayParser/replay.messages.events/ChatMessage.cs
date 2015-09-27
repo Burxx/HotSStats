@@ -5,6 +5,7 @@
     /// <summary>
     /// Defines a single line of text in a replay's conversation log.
     /// </summary>
+    [Serializable]
     public class ChatMessage
     {
         /// <summary> Gets or sets the chat message. </summary>
