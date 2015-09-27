@@ -157,8 +157,28 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="filter.png" />
     <Content Include="hots.ico" />
     <Content Include="hotsstats.ico" />
+    <Content Include="images\49.png" />
+    <Content Include="images\A-Z.png" />
+    <Content Include="images\Add folder.png" />
+    <Content Include="images\Add.png" />
+    <Content Include="images\calendar.png" />
+    <Content Include="images\Cancel.png" />
+    <Content Include="images\chart.png" />
+    <Content Include="images\Delete.png" />
+    <Content Include="images\filter.png" />
+    <Content Include="images\hots.ico" />
+    <Content Include="images\hotsstats.ico" />
+    <Content Include="images\Ok.png" />
+    <Content Include="images\Open.png" />
+    <Content Include="images\Repair.png" />
+    <Content Include="images\Revert.png" />
+    <Content Include="images\Save.png" />
+    <Content Include="images\Settings.ico" />
+    <Content Include="images\Settings.png" />
+    <Content Include="images\Stopwatch.png" />
     <Content Include="MpqLib\MpqLib.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
