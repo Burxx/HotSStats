@@ -32,6 +32,7 @@ Public Class Form1
                 CB_ChatTexts.Items.Add(t)
             Next
         End If
+        Lb_Time.Visible = False
         LoadingComplete = True
     End Sub
 
@@ -277,6 +278,8 @@ Public Class Form1
         Dim computer As New Regex(".* \d{1,2}$")
         Dim Names As New Dictionary(Of String, Integer)
         DD_Replays.Items.Clear()
+        Dim regex As New Regex("\b" + CB_ChatTexts.Text + "\b")
+        Dim minute = New TimeSpan(0, 0, 30)
 
         For Each rp In ReplayList.Stats.OrderBy(Function(i) i.Time)
             rp.isSelected = True
@@ -350,16 +353,22 @@ Public Class Form1
                     If rp.Messages.Count = 0 Then rp.isSelected = False : Continue For
                 ElseIf CB_ChatTexts.SelectedIndex = 2 Then
                     If rp.Messages.Count > 0 Then rp.isSelected = False : Continue For
-                Else
+                ElseIf CB_ChatTexts.SelectedIndex = 3 Then
                     rp.isSelected = False
+                    For Each msg In rp.Messages
+                        If msg.Message.Length > 3 AndAlso msg.Timestamp > minute AndAlso msg.Timestamp < rp.Length.Subtract(minute) Then rp.isSelected = True : Exit For
+                        Next
+
+                        If Not rp.isSelected Then Continue For
+                    Else
+                        rp.isSelected = False
                     If Not CB_WholeWords.Checked Then
                         For Each msg In rp.Messages
                             If msg.Message.ToLower.Contains(CB_ChatTexts.Text.ToLower) Then rp.isSelected = True : Exit For
                         Next
                     Else
-                        Dim regex As New Regex("\b" + CB_ChatTexts.Text + "\b")
                         For Each msg In rp.Messages
-                            If regex.IsMatch(msg.Message) Then rp.isSelected = True : Exit For
+                            If Regex.IsMatch(msg.Message) Then rp.isSelected = True : Exit For
                         Next
                     End If
                     If Not rp.isSelected Then Continue For
@@ -878,6 +887,12 @@ Public Class Form1
         CB_ChatTexts.Items.Add("")
         CB_ChatTexts.Items.Add("Any Chat")
         CB_ChatTexts.Items.Add("No Chat")
+        CB_ChatTexts.Items.Add("Relevant Chats")
 
+    End Sub
+
+    Private Sub CB_WholeWords_CheckedChanged(sender As Object, e As EventArgs) Handles CB_WholeWords.CheckedChanged
+        FilterReplays()
+        ChartIt()
     End Sub
 End Class

@@ -47,6 +47,8 @@ Partial Class Form1
         Me.DD_ChartData = New System.Windows.Forms.ComboBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Grp_Filter = New System.Windows.Forms.GroupBox()
+        Me.CB_WholeWords = New System.Windows.Forms.CheckBox()
+        Me.Butt_DeleteTexts = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.CB_OtherOrder = New System.Windows.Forms.CheckBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
@@ -77,8 +79,6 @@ Partial Class Form1
         Me.TB_Chat = New System.Windows.Forms.TextBox()
         Me.Lb_Players = New System.Windows.Forms.Label()
         Me.DD_Replays = New System.Windows.Forms.ComboBox()
-        Me.Butt_DeleteTexts = New System.Windows.Forms.Button()
-        Me.CB_WholeWords = New System.Windows.Forms.CheckBox()
         Me.DD_Map = New HotSStats.DropdownListbox()
         Me.DD_Heroes = New HotSStats.DropdownListbox()
         CType(Me.Bar_MinLength, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -274,16 +274,18 @@ Partial Class Form1
         Series1.Legend = "Legend1"
         Series1.Name = "Series1"
         Me.Chart1.Series.Add(Series1)
-        Me.Chart1.Size = New System.Drawing.Size(1344, 297)
+        Me.Chart1.Size = New System.Drawing.Size(1344, 307)
         Me.Chart1.TabIndex = 16
         Me.Chart1.Text = "Chart1"
         '
         'DD_ChartInfo
         '
+        Me.DD_ChartInfo.DropDownHeight = 200
         Me.DD_ChartInfo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.DD_ChartInfo.DropDownWidth = 400
         Me.DD_ChartInfo.FormattingEnabled = True
-        Me.DD_ChartInfo.Items.AddRange(New Object() {"for each ...", "Hero", "Hero Role", "Attack Type", "Map", "Day", "Week", "Month", "Weekday", "Time of Day", "Length", "Highest Tier", "Hero Level", "Team Hero Level Average", "Team Hero Level Median", "Team Hero Level Average Difference", "Team Hero Level Median Difference", "Hero in Own Team", "Hero in Enemy Team", "Own Team Composition", "Enemy Team Composition", "Number of Own Warriors", "Number of Own Assassins", "Number of Own Support", "Number of Own Specialists", "Number of Enemy Warriors", "Number of Enemy Assassins", "Number of Enemy Support", "Number of Enemy Specialists"})
+        Me.DD_ChartInfo.IntegralHeight = False
+        Me.DD_ChartInfo.Items.AddRange(New Object() {"for each ...", "Hero", "Hero Role", "Attack Type", "Map", "Day", "Week", "Month", "Weekday", "Time of Day", "Length", "Highest Tier", "Hero Level", "Team Hero Level Average", "Team Hero Level Median", "Team Hero Level Average Difference", "Team Hero Level Median Difference", "Hero in Own Team", "Hero in Enemy Team", "Own Team Composition", "Enemy Team Composition", "Number of Own Warriors", "Number of Own Assassins", "Number of Own Support", "Number of Own Specialists", "Number of Enemy Warriors", "Number of Enemy Assassins", "Number of Enemy Support", "Number of Enemy Specialists", "Number of Chat Messages", "Number of Players Talking"})
         Me.DD_ChartInfo.Location = New System.Drawing.Point(237, 32)
         Me.DD_ChartInfo.Margin = New System.Windows.Forms.Padding(5)
         Me.DD_ChartInfo.Name = "DD_ChartInfo"
@@ -378,6 +380,27 @@ Partial Class Form1
         Me.Grp_Filter.Text = "        Replay Filter"
         Me.Grp_Filter.Visible = False
         '
+        'CB_WholeWords
+        '
+        Me.CB_WholeWords.AutoSize = True
+        Me.CB_WholeWords.Location = New System.Drawing.Point(1004, 68)
+        Me.CB_WholeWords.Name = "CB_WholeWords"
+        Me.CB_WholeWords.Size = New System.Drawing.Size(123, 24)
+        Me.CB_WholeWords.TabIndex = 36
+        Me.CB_WholeWords.Text = "Whole Words"
+        Me.ToolTip1.SetToolTip(Me.CB_WholeWords, "Only search for whole words (searching for ""hi"" won't find ""high"")")
+        Me.CB_WholeWords.UseVisualStyleBackColor = True
+        '
+        'Butt_DeleteTexts
+        '
+        Me.Butt_DeleteTexts.Image = CType(resources.GetObject("Butt_DeleteTexts.Image"), System.Drawing.Image)
+        Me.Butt_DeleteTexts.Location = New System.Drawing.Point(1128, 36)
+        Me.Butt_DeleteTexts.Name = "Butt_DeleteTexts"
+        Me.Butt_DeleteTexts.Size = New System.Drawing.Size(32, 32)
+        Me.Butt_DeleteTexts.TabIndex = 35
+        Me.ToolTip1.SetToolTip(Me.Butt_DeleteTexts, "Remove texts from dropdown list")
+        Me.Butt_DeleteTexts.UseVisualStyleBackColor = True
+        '
         'Label1
         '
         Me.Label1.AutoSize = True
@@ -421,13 +444,16 @@ Partial Class Form1
         '
         'CB_ChatTexts
         '
+        Me.CB_ChatTexts.DropDownWidth = 200
         Me.CB_ChatTexts.FormattingEnabled = True
-        Me.CB_ChatTexts.Items.AddRange(New Object() {"", "Any Chat", "No Chat"})
+        Me.CB_ChatTexts.Items.AddRange(New Object() {"", "Any Chat", "No Chat", "Relevant Chats"})
         Me.CB_ChatTexts.Location = New System.Drawing.Point(1004, 38)
         Me.CB_ChatTexts.Name = "CB_ChatTexts"
         Me.CB_ChatTexts.Size = New System.Drawing.Size(121, 28)
         Me.CB_ChatTexts.TabIndex = 33
-        Me.ToolTip1.SetToolTip(Me.CB_ChatTexts, "Find replays with a certain text in chat messages (e.g. Noob)")
+        Me.ToolTip1.SetToolTip(Me.CB_ChatTexts, "Find replays with a certain text in chat messages (e.g. Noob). Relevant Chats: Me" &
+        "ssages with more than 3 letters, not before 00:30 and not after 30 Seconds befor" &
+        "e the end")
         '
         'CB_Losses
         '
@@ -562,7 +588,7 @@ Partial Class Form1
         'Lb_Added
         '
         Me.Lb_Added.AutoSize = True
-        Me.Lb_Added.Location = New System.Drawing.Point(14, 203)
+        Me.Lb_Added.Location = New System.Drawing.Point(166, 263)
         Me.Lb_Added.Margin = New System.Windows.Forms.Padding(5, 0, 5, 0)
         Me.Lb_Added.Name = "Lb_Added"
         Me.Lb_Added.Size = New System.Drawing.Size(0, 20)
@@ -578,12 +604,12 @@ Partial Class Form1
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage1)
-        Me.TabControl1.Location = New System.Drawing.Point(0, 295)
+        Me.TabControl1.Location = New System.Drawing.Point(0, 292)
         Me.TabControl1.Margin = New System.Windows.Forms.Padding(0)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.Padding = New System.Drawing.Point(0, 0)
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1348, 417)
+        Me.TabControl1.Size = New System.Drawing.Size(1348, 422)
         Me.TabControl1.TabIndex = 32
         '
         'TabPage2
@@ -593,7 +619,7 @@ Partial Class Form1
         Me.TabPage2.Location = New System.Drawing.Point(4, 29)
         Me.TabPage2.Margin = New System.Windows.Forms.Padding(0)
         Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Size = New System.Drawing.Size(1340, 384)
+        Me.TabPage2.Size = New System.Drawing.Size(1340, 389)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Chart"
         '
@@ -610,7 +636,7 @@ Partial Class Form1
         Me.TabPage1.Location = New System.Drawing.Point(4, 29)
         Me.TabPage1.Margin = New System.Windows.Forms.Padding(0)
         Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Size = New System.Drawing.Size(1295, 384)
+        Me.TabPage1.Size = New System.Drawing.Size(1340, 389)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Details"
         '
@@ -659,7 +685,7 @@ Partial Class Form1
         Me.TB_Chat.Name = "TB_Chat"
         Me.TB_Chat.ReadOnly = True
         Me.TB_Chat.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.TB_Chat.Size = New System.Drawing.Size(663, 319)
+        Me.TB_Chat.Size = New System.Drawing.Size(663, 324)
         Me.TB_Chat.TabIndex = 2
         '
         'Lb_Players
@@ -683,27 +709,6 @@ Partial Class Form1
         Me.DD_Replays.Name = "DD_Replays"
         Me.DD_Replays.Size = New System.Drawing.Size(507, 28)
         Me.DD_Replays.TabIndex = 0
-        '
-        'Butt_DeleteTexts
-        '
-        Me.Butt_DeleteTexts.Image = CType(resources.GetObject("Butt_DeleteTexts.Image"), System.Drawing.Image)
-        Me.Butt_DeleteTexts.Location = New System.Drawing.Point(1128, 36)
-        Me.Butt_DeleteTexts.Name = "Butt_DeleteTexts"
-        Me.Butt_DeleteTexts.Size = New System.Drawing.Size(32, 32)
-        Me.Butt_DeleteTexts.TabIndex = 35
-        Me.ToolTip1.SetToolTip(Me.Butt_DeleteTexts, "Remove texts from dropdown list")
-        Me.Butt_DeleteTexts.UseVisualStyleBackColor = True
-        '
-        'CB_WholeWords
-        '
-        Me.CB_WholeWords.AutoSize = True
-        Me.CB_WholeWords.Location = New System.Drawing.Point(1004, 68)
-        Me.CB_WholeWords.Name = "CB_WholeWords"
-        Me.CB_WholeWords.Size = New System.Drawing.Size(123, 24)
-        Me.CB_WholeWords.TabIndex = 36
-        Me.CB_WholeWords.Text = "Whole Words"
-        Me.ToolTip1.SetToolTip(Me.CB_WholeWords, "Only search for whole words (searching for ""hi"" won't find ""high"")")
-        Me.CB_WholeWords.UseVisualStyleBackColor = True
         '
         'DD_Map
         '

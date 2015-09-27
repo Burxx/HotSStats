@@ -106,6 +106,8 @@ Module Chart
         Enemy_Assassins
         Enemy_Support
         Enemy_Specialists
+        Chat_Messages
+        Chat_Players
     End Enum
 
     Enum TeamComposition
@@ -293,6 +295,31 @@ Module Chart
                 Return rp.Map
             Case ChartCategoryTypes.Time_of_Day
                 Return rp.Time.ToLocalTime.Hour
+            Case ChartCategoryTypes.Chat_Messages
+                Dim minute = New TimeSpan(0, 0, 30)
+                Dim z = 0
+                For Each msg In rp.Messages
+                    If msg.Message.Length > 3 AndAlso msg.Timestamp > minute AndAlso msg.Timestamp < rp.Length.Subtract(minute) Then
+                        z += 1
+                    End If
+                Next
+                Select Case z
+                    Case 0 To 5
+                        Return " " + z.ToString
+                    Case 6 To 10
+                        Return " 6-10"
+                    Case Else
+                        Return "11+"
+                End Select
+            Case ChartCategoryTypes.Chat_Players
+                Dim hash As New HashSet(Of Integer)
+                Dim minute = New TimeSpan(0, 0, 30)
+                For Each msg In rp.Messages
+                    If msg.Message.Length > 3 AndAlso msg.Timestamp > minute AndAlso msg.Timestamp < rp.Length.Subtract(minute) Then
+                        hash.Add(msg.PlayerId)
+                    End If
+                Next
+                Return hash.Count
             Case ChartCategoryTypes.Weekday
                 Return ((rp.Time.ToLocalTime.DayOfWeek + 7 - CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek) Mod 7).ToString + rp.Time.ToLocalTime.ToString("ddd")
             Case ChartCategoryTypes.Length_in_Minutes
@@ -652,6 +679,10 @@ Module Chart
                 Return (ChartCategoryTypes.Enemy_Support)
             Case "Number of Enemy Specialists"
                 Return (ChartCategoryTypes.Enemy_Specialists)
+            Case "Number of Chat Messages"
+                Return (ChartCategoryTypes.Chat_Messages)
+            Case "Number of Players Talking"
+                Return (ChartCategoryTypes.Chat_Players)
             Case Else
                 Return ChartCategoryTypes.noChart
         End Select
