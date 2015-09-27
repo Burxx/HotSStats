@@ -144,10 +144,11 @@ Public Class Form1
                 Rep.Time = replay.Timestamp
             End If
             Rep.Length = replay.ReplayLength
+
             Rep.Map = replay.Map
             Rep.MapWidth = replay.MapSize.X
             Rep.MapHeight = replay.MapSize.Y
-            Debug.Print(Rep.Map)
+            'Debug.Print(Rep.Map)
             If replay.Players(0).IsWinner Then
                 Rep.Teams(replay.Players(0).Team).isWinner = True
                 Rep.Teams(1 - replay.Players(0).Team).isWinner = False
@@ -488,8 +489,10 @@ Public Class Form1
         Next
         DD_Heroes.Items.Clear()
         DD_Heroes.Items.Add("Heroes")
+        DD_WithHero.Items.Clear()
         DD_WithHero.Items.Add("With ...")
         DD_WithHero.SelectedIndex = 0
+        DD_AgainstHero.Items.Clear()
         DD_AgainstHero.Items.Add("Against ...")
         DD_AgainstHero.SelectedIndex = 0
         For Each h In Heroes.OrderBy(Function(x As String) x)
