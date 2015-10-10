@@ -38,6 +38,7 @@
         row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Leoric", "Léoric,Leoryk,Леорик", "Warrior", "Melee") : DGV_Heroes.Rows.Add(row)
         row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Li Li", "Ли Ли", "Support", "Ranged") : DGV_Heroes.Rows.Add(row)
         row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Lost Vikings", "Les Vikings perdus,Vikingos Perdidos,Vichinghi Sperduti,Zaginieni Wikingowie,Потерявшиеся викинги,Os Vikings Perdidos", "Specialist", "Melee") : DGV_Heroes.Rows.Add(row)
+        row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Lt. Morales", "Tte. Morales,Lt Morales,Ten. Morales,Por. Morales,Лейтенант Моралес,Teniente Morales", "Support", "Ranged") : DGV_Heroes.Rows.Add(row)
         row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Malfurion", "Малфурион", "Support", "Ranged") : DGV_Heroes.Rows.Add(row)
         row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Muradin", "Мурадин", "Warrior", "Melee") : DGV_Heroes.Rows.Add(row)
         row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Murky", "Bourbie,Fosky,Męcik,Мурчаль,Murquinho", "Specialist", "Melee") : DGV_Heroes.Rows.Add(row)

@@ -856,7 +856,7 @@ Public Class Form1
 
     Private Sub DD_Replays_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles DD_Replays.SelectionChangeCommitted
         For Each rp In ReplayList.Stats
-            If DD_Replays.SelectedItem.ToString = rp.Time.ToString + " " + rp.Filename Then
+            If DD_Replays.SelectedItem.ToString = rp.Time.ToLocalTime.ToString + " " + rp.Filename Then
                 Dim sb As New StringBuilder
                 TB_Chat.Text = rp.Chat
                 sb.AppendLine("Own Team " + IIf(rp.OwnTeam.isWinner, "(Winner)", "(Loser)").ToString)
@@ -895,4 +895,6 @@ Public Class Form1
         FilterReplays()
         ChartIt()
     End Sub
+
+
 End Class
