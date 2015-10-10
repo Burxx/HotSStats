@@ -407,7 +407,7 @@ Public Class Form1
 
             If rp.isSelected Then
                 ReplayList.selected += 1
-                DD_Replays.Items.Add(rp.Time.ToString + " " + rp.Filename)
+                DD_Replays.Items.Add(rp.Time.ToLocalTime.ToString + " " + rp.Filename)
             End If
 
         Next

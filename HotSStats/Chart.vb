@@ -35,7 +35,7 @@ Module Chart
             Dim tr = t.NewRow()
             tr("Item") = Key
             tr("Win") = Win
-            tr("Loss")=Loss
+            tr("Loss") = Loss
             tr("WinWith") = WinWithPlayer
             tr("LossWith") = LossWithPlayer
             tr("WinAgainst") = WinAgainstPlayer
@@ -65,12 +65,8 @@ Module Chart
                     tr(h) = 0
                 End If
             Next
-
-            't.Rows.Add(Key, Win, Loss, Players10, Players5, Players1, Warrior, Assassin, Support, Specialist, Melee, Ranged, Tier0, Tier1, Tier2, Tier3, Tier4, Tier5, Tier6, Tier7)
             t.Rows.Add(tr)
-
         End Sub
-
 
     End Class
 

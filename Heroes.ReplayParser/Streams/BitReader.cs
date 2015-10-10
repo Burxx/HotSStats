@@ -35,7 +35,8 @@
         {
             get
             {
-                return (this.Cursor >> 3) == this.stream.Length;
+                // *change*
+                return (this.Cursor >> 3) >= this.stream.Length;
             }
         }
 

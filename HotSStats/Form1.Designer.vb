@@ -49,6 +49,8 @@ Partial Class Form1
         Me.Grp_Filter = New System.Windows.Forms.GroupBox()
         Me.CB_WholeWords = New System.Windows.Forms.CheckBox()
         Me.Butt_DeleteTexts = New System.Windows.Forms.Button()
+        Me.DD_Map = New HotSStats.DropdownListbox()
+        Me.DD_Heroes = New HotSStats.DropdownListbox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.CB_OtherOrder = New System.Windows.Forms.CheckBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
@@ -79,8 +81,6 @@ Partial Class Form1
         Me.TB_Chat = New System.Windows.Forms.TextBox()
         Me.Lb_Players = New System.Windows.Forms.Label()
         Me.DD_Replays = New System.Windows.Forms.ComboBox()
-        Me.DD_Map = New HotSStats.DropdownListbox()
-        Me.DD_Heroes = New HotSStats.DropdownListbox()
         CType(Me.Bar_MinLength, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Bar_MaxLength, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Bar_MaxDate, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -274,7 +274,7 @@ Partial Class Form1
         Series1.Legend = "Legend1"
         Series1.Name = "Series1"
         Me.Chart1.Series.Add(Series1)
-        Me.Chart1.Size = New System.Drawing.Size(1344, 307)
+        Me.Chart1.Size = New System.Drawing.Size(1344, 385)
         Me.Chart1.TabIndex = 16
         Me.Chart1.Text = "Chart1"
         '
@@ -400,6 +400,27 @@ Partial Class Form1
         Me.Butt_DeleteTexts.TabIndex = 35
         Me.ToolTip1.SetToolTip(Me.Butt_DeleteTexts, "Remove texts from dropdown list")
         Me.Butt_DeleteTexts.UseVisualStyleBackColor = True
+        '
+        'DD_Map
+        '
+        Me.DD_Map.FormattingEnabled = True
+        Me.DD_Map.ItemHeight = 20
+        Me.DD_Map.Location = New System.Drawing.Point(262, 27)
+        Me.DD_Map.Name = "DD_Map"
+        Me.DD_Map.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple
+        Me.DD_Map.Size = New System.Drawing.Size(221, 24)
+        Me.DD_Map.TabIndex = 20
+        '
+        'DD_Heroes
+        '
+        Me.DD_Heroes.FormattingEnabled = True
+        Me.DD_Heroes.ItemHeight = 20
+        Me.DD_Heroes.Location = New System.Drawing.Point(262, 57)
+        Me.DD_Heroes.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
+        Me.DD_Heroes.Name = "DD_Heroes"
+        Me.DD_Heroes.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple
+        Me.DD_Heroes.Size = New System.Drawing.Size(221, 24)
+        Me.DD_Heroes.TabIndex = 19
         '
         'Label1
         '
@@ -709,27 +730,6 @@ Partial Class Form1
         Me.DD_Replays.Name = "DD_Replays"
         Me.DD_Replays.Size = New System.Drawing.Size(507, 28)
         Me.DD_Replays.TabIndex = 0
-        '
-        'DD_Map
-        '
-        Me.DD_Map.FormattingEnabled = True
-        Me.DD_Map.ItemHeight = 20
-        Me.DD_Map.Location = New System.Drawing.Point(262, 27)
-        Me.DD_Map.Name = "DD_Map"
-        Me.DD_Map.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple
-        Me.DD_Map.Size = New System.Drawing.Size(221, 24)
-        Me.DD_Map.TabIndex = 20
-        '
-        'DD_Heroes
-        '
-        Me.DD_Heroes.FormattingEnabled = True
-        Me.DD_Heroes.ItemHeight = 20
-        Me.DD_Heroes.Location = New System.Drawing.Point(262, 57)
-        Me.DD_Heroes.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
-        Me.DD_Heroes.Name = "DD_Heroes"
-        Me.DD_Heroes.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple
-        Me.DD_Heroes.Size = New System.Drawing.Size(221, 24)
-        Me.DD_Heroes.TabIndex = 19
         '
         'Form1
         '
