@@ -54,7 +54,25 @@ End Class
         Next
         Return SB.ToString
     End Function
-
+    Public Function AILevel() As ReplayStatsPlayer.AILevel
+        AILevel = ReplayStatsPlayer.AILevel.Unknown
+        For Each t In Teams
+            For Each p In t.Players
+                If p.Type = Heroes.ReplayParser.PlayerType.Computer Then
+                    If AILevel = ReplayStatsPlayer.AILevel.Unknown Then
+                        AILevel = p.Difficulty
+                    ElseIf AILevel <> ReplayStatsPlayer.AILevel.Mixed AndAlso p.Difficulty <> AILevel Then
+                        AILevel = ReplayStatsPlayer.AILevel.Mixed
+                        Exit For
+                    Else
+                        AILevel = p.Difficulty
+                    End If
+                End If
+            Next
+            If AILevel = ReplayStatsPlayer.AILevel.Mixed Then Exit For
+        Next
+        Return AILevel
+    End Function
 End Class
 
 <Serializable()> Public Class ReplayStatsTeam
@@ -77,10 +95,20 @@ End Class
 End Class
 
 <Serializable()> Public Class ReplayStatsPlayer
+    Public Enum AILevel
+        Unknown
+        Beginner
+        Recruit
+        Adept
+        Veteran
+        Elite
+        Mixed
+    End Enum
     Public Name As String
     Public Hero As String
     Public Level As Integer
     Public Type As PlayerType
     Public Number As Integer
     Public Autoselect As Boolean
+    Public Difficulty As AILevel
 End Class

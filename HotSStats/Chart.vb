@@ -14,6 +14,17 @@ Module Chart
         Public Players10 As Integer
         Public Players5 As Integer
         Public Players1 As Integer
+        Public Players1Beginner As Integer
+        Public Players1Recruit As Integer
+        Public Players1Adept As Integer
+        Public Players1Veteran As Integer
+        Public Players1Elite As Integer
+        Public Players5Beginner As Integer
+        Public Players5Recruit As Integer
+        Public Players5Adept As Integer
+        Public Players5Veteran As Integer
+        Public Players5Elite As Integer
+        Public Players5Mixed As Integer
         Public Warrior As Integer
         Public Assassin As Integer
         Public Support As Integer
@@ -42,7 +53,18 @@ Module Chart
             tr("LossAgainst") = LossAgainstPlayer
             tr("PvP") = Players10
             tr("PvC") = Players5
+            tr("PvCBeginner") = Players5Beginner
+            tr("PvCRecruit") = Players5Recruit
+            tr("PvCAdept") = Players5Adept
+            tr("PvCVeteran") = Players5Veteran
+            tr("PvCElite") = Players5Elite
+            tr("PvCMixed") = players5mixed
             tr("Solo") = Players1
+            tr("SoloBeginner") = Players1Beginner
+            tr("SoloRecruit") = Players1Recruit
+            tr("SoloAdept") = Players1Adept
+            tr("SoloVeteran") = Players1Veteran
+            tr("SoloElite") = Players1Elite
             tr("Warrior") = Warrior
             tr("Assassin") = Assassin
             tr("Support") = Support
@@ -104,6 +126,7 @@ Module Chart
         Enemy_Specialists
         Chat_Messages
         Chat_Players
+        AI_Level
     End Enum
 
     Enum TeamComposition
@@ -201,7 +224,18 @@ Module Chart
         Table.Columns.Add("LossAgainst", GetType(Integer))
         Table.Columns.Add("PvP", GetType(Integer))
         Table.Columns.Add("PvC", GetType(Integer))
+        Table.Columns.Add("PvCBeginner", GetType(Integer))
+        Table.Columns.Add("PvCRecruit", GetType(Integer))
+        Table.Columns.Add("PvCAdept", GetType(Integer))
+        Table.Columns.Add("PvCVeteran", GetType(Integer))
+        Table.Columns.Add("PvCElite", GetType(Integer))
+        Table.Columns.Add("PvCMixed", GetType(Integer))
         Table.Columns.Add("Solo", GetType(Integer))
+        Table.Columns.Add("SoloBeginner", GetType(Integer))
+        Table.Columns.Add("SoloRecruit", GetType(Integer))
+        Table.Columns.Add("SoloAdept", GetType(Integer))
+        Table.Columns.Add("SoloVeteran", GetType(Integer))
+        Table.Columns.Add("SoloElite", GetType(Integer))
         Table.Columns.Add("Warrior", GetType(Integer))
         Table.Columns.Add("Assassin", GetType(Integer))
         Table.Columns.Add("Support", GetType(Integer))
@@ -279,6 +313,8 @@ Module Chart
                 Return rp.Time.ToLocalTime.Year.ToString + "-" + rp.Time.ToLocalTime.Month.ToString("00")
             Case ChartCategoryTypes.Heroes
                 Return rp.Hero
+            Case ChartCategoryTypes.AI_Level
+                Return "(" + rp.AILevel.value__.ToString + ") " + rp.AILevel.ToString
             Case ChartCategoryTypes.Enemy_Heroes
                 Return {rp.EnemyTeam.Players(0).Hero, rp.EnemyTeam.Players(1).Hero, rp.EnemyTeam.Players(2).Hero, rp.EnemyTeam.Players(3).Hero, rp.EnemyTeam.Players(4).Hero}
             Case ChartCategoryTypes.Own_Heroes
@@ -321,7 +357,11 @@ Module Chart
             Case ChartCategoryTypes.Length_in_Minutes
                 Return Int(rp.Length.TotalMinutes)
             Case ChartCategoryTypes.Tier_achieved
-                Return TierLevel(rp.OwnTeam.Milestones.Count)
+                If rp.OwnTeam.Milestones.Count <= 7 Then
+                    Return TierLevel(rp.OwnTeam.Milestones.Count)
+                Else
+                    Return TierLevel(0)
+                End If
             Case ChartCategoryTypes.Hero_Level
                 For Each team In rp.Teams
                     For Each player In team.Players
@@ -408,8 +448,34 @@ Module Chart
                 ReplayValues(Category).Players10 += 1
             Case 1
                 ReplayValues(Category).Players1 += 1
+                Select Case Replay.AILevel
+                    Case ReplayStatsPlayer.AILevel.Beginner
+                        ReplayValues(Category).Players1Beginner += 1
+                    Case ReplayStatsPlayer.AILevel.Recruit
+                        ReplayValues(Category).Players1Recruit += 1
+                    Case ReplayStatsPlayer.AILevel.Adept
+                        ReplayValues(Category).Players1Adept += 1
+                    Case ReplayStatsPlayer.AILevel.Veteran
+                        ReplayValues(Category).Players1Veteran += 1
+                    Case ReplayStatsPlayer.AILevel.Elite
+                        ReplayValues(Category).Players1Elite += 1
+                End Select
             Case Else
                 ReplayValues(Category).Players5 += 1
+                Select Case Replay.AILevel
+                    Case ReplayStatsPlayer.AILevel.Beginner
+                        ReplayValues(Category).Players5Beginner += 1
+                    Case ReplayStatsPlayer.AILevel.Recruit
+                        ReplayValues(Category).Players5Recruit += 1
+                    Case ReplayStatsPlayer.AILevel.Adept
+                        ReplayValues(Category).Players5Adept += 1
+                    Case ReplayStatsPlayer.AILevel.Veteran
+                        ReplayValues(Category).Players5Veteran += 1
+                    Case ReplayStatsPlayer.AILevel.Elite
+                        ReplayValues(Category).Players5Elite += 1
+                    Case ReplayStatsPlayer.AILevel.Mixed
+                        ReplayValues(Category).Players5Mixed += 1
+                End Select
         End Select
 
         If Replay.Hero IsNot Nothing Then
@@ -550,6 +616,44 @@ Module Chart
                 chart.Series(0).Points.DataBind(table.DefaultView, "Item", "PvP", Nothing)
                 chart.Series(1).Points.DataBind(table.DefaultView, "Item", "PvC", Nothing)
                 chart.Series(2).Points.DataBind(table.DefaultView, "Item", "Solo", Nothing)
+            Case "Game Types with Levels"
+                chart.Legends(0).Title = "Game Type"
+                chart.Series.Add("Players vs Players")
+                chart.Series.Add("Players vs A.I. Beginner")
+                chart.Series.Add("Players vs A.I. Recruit")
+                chart.Series.Add("Players vs A.I. Adept")
+                chart.Series.Add("Players vs A.I. Veteran")
+                chart.Series.Add("Players vs A.I. Elite")
+                chart.Series.Add("Players vs A.I. Mixed")
+                chart.Series.Add("Solo vs A.I. Beginner")
+                chart.Series.Add("Solo vs A.I. Recruit")
+                chart.Series.Add("Solo vs A.I. Adept")
+                chart.Series.Add("Solo vs A.I. Veteran")
+                chart.Series.Add("Solo vs A.I. Elite")
+                chart.Series(0).Points.DataBind(table.DefaultView, "Item", "PvP", Nothing)
+                chart.Series(1).Points.DataBind(table.DefaultView, "Item", "PvCBeginner", Nothing)
+                chart.Series(2).Points.DataBind(table.DefaultView, "Item", "PvCRecruit", Nothing)
+                chart.Series(3).Points.DataBind(table.DefaultView, "Item", "PvCAdept", Nothing)
+                chart.Series(4).Points.DataBind(table.DefaultView, "Item", "PvCVeteran", Nothing)
+                chart.Series(5).Points.DataBind(table.DefaultView, "Item", "PvCElite", Nothing)
+                chart.Series(6).Points.DataBind(table.DefaultView, "Item", "PvCMixed", Nothing)
+                chart.Series(7).Points.DataBind(table.DefaultView, "Item", "SoloBeginner", Nothing)
+                chart.Series(8).Points.DataBind(table.DefaultView, "Item", "SoloRecruit", Nothing)
+                chart.Series(9).Points.DataBind(table.DefaultView, "Item", "SoloAdept", Nothing)
+                chart.Series(10).Points.DataBind(table.DefaultView, "Item", "SoloVeteran", Nothing)
+                chart.Series(11).Points.DataBind(table.DefaultView, "Item", "SoloElite", Nothing)
+                chart.Series(0).Color = Color.Wheat
+                chart.Series(1).Color = Color.Blue
+                chart.Series(2).Color = Color.MediumBlue
+                chart.Series(3).Color = Color.CornflowerBlue
+                chart.Series(4).Color = Color.DeepSkyBlue
+                chart.Series(5).Color = Color.DodgerBlue
+                chart.Series(6).Color = Color.Purple
+                chart.Series(7).Color = Color.DarkOrange
+                chart.Series(8).Color = Color.DeepPink
+                chart.Series(9).Color = Color.OrangeRed
+                chart.Series(10).Color = Color.PaleVioletRed
+                chart.Series(11).Color = Color.Red
             Case "Heroes"
                 chart.Legends(0).Title = "Hero"
                 Dim z = 0
@@ -645,6 +749,8 @@ Module Chart
                 Return (ChartCategoryTypes.Length_in_Minutes)
             Case "Highest Tier"
                 Return (ChartCategoryTypes.Tier_achieved)
+            Case "A.I. Level"
+                Return (ChartCategoryTypes.AI_Level)
             Case "Hero Level"
                 Return (ChartCategoryTypes.Hero_Level)
             Case "Team Hero Level Average"

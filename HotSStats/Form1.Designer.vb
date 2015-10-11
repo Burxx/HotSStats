@@ -49,8 +49,6 @@ Partial Class Form1
         Me.Grp_Filter = New System.Windows.Forms.GroupBox()
         Me.CB_WholeWords = New System.Windows.Forms.CheckBox()
         Me.Butt_DeleteTexts = New System.Windows.Forms.Button()
-        Me.DD_Map = New HotSStats.DropdownListbox()
-        Me.DD_Heroes = New HotSStats.DropdownListbox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.CB_OtherOrder = New System.Windows.Forms.CheckBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
@@ -81,6 +79,8 @@ Partial Class Form1
         Me.TB_Chat = New System.Windows.Forms.TextBox()
         Me.Lb_Players = New System.Windows.Forms.Label()
         Me.DD_Replays = New System.Windows.Forms.ComboBox()
+        Me.DD_Map = New HotSStats.DropdownListbox()
+        Me.DD_Heroes = New HotSStats.DropdownListbox()
         CType(Me.Bar_MinLength, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Bar_MaxLength, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Bar_MaxDate, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -285,7 +285,7 @@ Partial Class Form1
         Me.DD_ChartInfo.DropDownWidth = 400
         Me.DD_ChartInfo.FormattingEnabled = True
         Me.DD_ChartInfo.IntegralHeight = False
-        Me.DD_ChartInfo.Items.AddRange(New Object() {"for each ...", "Hero", "Hero Role", "Attack Type", "Map", "Day", "Week", "Month", "Weekday", "Time of Day", "Length", "Highest Tier", "Hero Level", "Team Hero Level Average", "Team Hero Level Median", "Team Hero Level Average Difference", "Team Hero Level Median Difference", "Hero in Own Team", "Hero in Enemy Team", "Own Team Composition", "Enemy Team Composition", "Number of Own Warriors", "Number of Own Assassins", "Number of Own Support", "Number of Own Specialists", "Number of Enemy Warriors", "Number of Enemy Assassins", "Number of Enemy Support", "Number of Enemy Specialists", "Number of Chat Messages", "Number of Players Talking"})
+        Me.DD_ChartInfo.Items.AddRange(New Object() {"for each ...", "Hero", "Hero Role", "Attack Type", "Map", "Day", "Week", "Month", "Weekday", "Time of Day", "Length", "Highest Tier", "A.I. Level", "Hero Level", "Team Hero Level Average", "Team Hero Level Median", "Team Hero Level Average Difference", "Team Hero Level Median Difference", "Hero in Own Team", "Hero in Enemy Team", "Own Team Composition", "Enemy Team Composition", "Number of Own Warriors", "Number of Own Assassins", "Number of Own Support", "Number of Own Specialists", "Number of Enemy Warriors", "Number of Enemy Assassins", "Number of Enemy Support", "Number of Enemy Specialists", "Number of Chat Messages", "Number of Players Talking"})
         Me.DD_ChartInfo.Location = New System.Drawing.Point(237, 32)
         Me.DD_ChartInfo.Margin = New System.Windows.Forms.Padding(5)
         Me.DD_ChartInfo.Name = "DD_ChartInfo"
@@ -322,7 +322,7 @@ Partial Class Form1
         '
         Me.DD_ChartData.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.DD_ChartData.FormattingEnabled = True
-        Me.DD_ChartData.Items.AddRange(New Object() {"Show ...", "Wins/Losses", "Wins/Losses with/against ...", "Game Types", "Heroes", "Hero Roles", "Attack Types", "Highest Tiers"})
+        Me.DD_ChartData.Items.AddRange(New Object() {"Show ...", "Wins/Losses", "Wins/Losses with/against ...", "Game Types", "Game Types with Levels", "Heroes", "Hero Roles", "Attack Types", "Highest Tiers"})
         Me.DD_ChartData.Location = New System.Drawing.Point(8, 32)
         Me.DD_ChartData.Margin = New System.Windows.Forms.Padding(5)
         Me.DD_ChartData.Name = "DD_ChartData"
@@ -400,27 +400,6 @@ Partial Class Form1
         Me.Butt_DeleteTexts.TabIndex = 35
         Me.ToolTip1.SetToolTip(Me.Butt_DeleteTexts, "Remove texts from dropdown list")
         Me.Butt_DeleteTexts.UseVisualStyleBackColor = True
-        '
-        'DD_Map
-        '
-        Me.DD_Map.FormattingEnabled = True
-        Me.DD_Map.ItemHeight = 20
-        Me.DD_Map.Location = New System.Drawing.Point(262, 27)
-        Me.DD_Map.Name = "DD_Map"
-        Me.DD_Map.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple
-        Me.DD_Map.Size = New System.Drawing.Size(221, 24)
-        Me.DD_Map.TabIndex = 20
-        '
-        'DD_Heroes
-        '
-        Me.DD_Heroes.FormattingEnabled = True
-        Me.DD_Heroes.ItemHeight = 20
-        Me.DD_Heroes.Location = New System.Drawing.Point(262, 57)
-        Me.DD_Heroes.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
-        Me.DD_Heroes.Name = "DD_Heroes"
-        Me.DD_Heroes.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple
-        Me.DD_Heroes.Size = New System.Drawing.Size(221, 24)
-        Me.DD_Heroes.TabIndex = 19
         '
         'Label1
         '
@@ -730,6 +709,27 @@ Partial Class Form1
         Me.DD_Replays.Name = "DD_Replays"
         Me.DD_Replays.Size = New System.Drawing.Size(507, 28)
         Me.DD_Replays.TabIndex = 0
+        '
+        'DD_Map
+        '
+        Me.DD_Map.FormattingEnabled = True
+        Me.DD_Map.ItemHeight = 20
+        Me.DD_Map.Location = New System.Drawing.Point(262, 27)
+        Me.DD_Map.Name = "DD_Map"
+        Me.DD_Map.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple
+        Me.DD_Map.Size = New System.Drawing.Size(221, 24)
+        Me.DD_Map.TabIndex = 20
+        '
+        'DD_Heroes
+        '
+        Me.DD_Heroes.FormattingEnabled = True
+        Me.DD_Heroes.ItemHeight = 20
+        Me.DD_Heroes.Location = New System.Drawing.Point(262, 57)
+        Me.DD_Heroes.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
+        Me.DD_Heroes.Name = "DD_Heroes"
+        Me.DD_Heroes.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple
+        Me.DD_Heroes.Size = New System.Drawing.Size(221, 24)
+        Me.DD_Heroes.TabIndex = 19
         '
         'Form1
         '

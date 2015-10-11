@@ -6,6 +6,7 @@ namespace Heroes.ReplayParser
 {
     using System.Collections.Generic;
 
+
     public class ReplayAttributeEvents
     {
         public ReplayAttribute[] Attributes { get; set; }
@@ -87,14 +88,13 @@ namespace Heroes.ReplayParser
                                 case "medi":
                                     player.Difficulty = Difficulty.Medium;
                                     break;
-                                case "hard":
+                                case "hdvh":                       // *change*
                                     player.Difficulty = Difficulty.Hard;
                                     break;
                                 case "vyhd":
                                     player.Difficulty = Difficulty.VeryHard;
                                     break;
-                                case "insa":
-                                    player.Difficulty = Difficulty.Insane;
+                                default:
                                     break;
                             }
 
