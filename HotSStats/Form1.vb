@@ -143,15 +143,6 @@ Public Class Form1
                 ReplayServerBattlelobby.Parse(replay, GetMpqArchiveFileBytes(archive, "replay.server.battlelobby"))
                 ReplayMessageEvents.Parse(replay, GetMpqArchiveFileBytes(archive, "replay.message.events"))
             End Using
-            Dim hard = False
-            Dim vyhard = False
-            For Each p In replay.Players
-                If p.Difficulty = Difficulty.Hard Then hard = True
-                If p.Difficulty = Difficulty.VeryHard Then vyhard = True
-            Next
-            If hard And vyhard Then
-                Dim xx = replay.Timestamp
-            End If
             Dim Rep As New ReplayStats
             If InStr(rp, "Multiplayer") > 0 Then
                 Rep.Filename = Mid(rp, 12 + InStr(rp, "Multiplayer"))

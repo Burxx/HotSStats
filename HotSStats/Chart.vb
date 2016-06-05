@@ -58,7 +58,7 @@ Module Chart
             tr("PvCAdept") = Players5Adept
             tr("PvCVeteran") = Players5Veteran
             tr("PvCElite") = Players5Elite
-            tr("PvCMixed") = players5mixed
+            tr("PvCMixed") = Players5Mixed
             tr("Solo") = Players1
             tr("SoloBeginner") = Players1Beginner
             tr("SoloRecruit") = Players1Recruit
@@ -572,6 +572,7 @@ Module Chart
         Dim ChartAreaWidth As Integer = CInt(Chart.ChartAreas(0).Position.Width * Chart.Width / 100)
         With Chart.ChartAreas(0)
             .AxisX.Interval = Math.Ceiling(20 * Table.Rows.Count / ChartAreaWidth)
+
             Select Case ValueType
                 Case ChartCategoryTypes.Hero_Level, ChartCategoryTypes.Team_Hero_Level_Average_Difference, ChartCategoryTypes.Team_Hero_Level_Average, ChartCategoryTypes.Tier_achieved,
                      ChartCategoryTypes.Time_of_Day, ChartCategoryTypes.Length_in_Minutes, ChartCategoryTypes.Weekday, ChartCategoryTypes.Hero_Roles,

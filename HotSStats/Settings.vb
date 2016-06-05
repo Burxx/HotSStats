@@ -61,6 +61,17 @@
         row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Valla", "Cacciatrice di demoni,Валла", "Assassin", "Ranged") : DGV_Heroes.Rows.Add(row)
         row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Zagara", "Загара", "Specialist", "Ranged") : DGV_Heroes.Rows.Add(row)
         row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Zeratul", "Зератул", "Assassin", "Melee") : DGV_Heroes.Rows.Add(row)
+        row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Artanis", "Артанис", "Warrior", "Melee") : DGV_Heroes.Rows.Add(row)
+        row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Cho", "Czo,Чо", "Warrior", "Melee") : DGV_Heroes.Rows.Add(row)
+        row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Gall", "Gal,Галл", "Assassin", "Ranged") : DGV_Heroes.Rows.Add(row)
+        row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Lunara", "Лунара", "Assassin", "Ranged") : DGV_Heroes.Rows.Add(row)
+        row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Greymane", "Graummähne,Cringris,Grisetête,Mantogrigio,Szarogrzywy,Седогрив", "Assassin", "Ranged") : DGV_Heroes.Rows.Add(row)
+        row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Li-Ming", "Ли-Мин", "Assassin", "Ranged") : DGV_Heroes.Rows.Add(row)
+        row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Xul", "Зул", "Specialist", "Melee") : DGV_Heroes.Rows.Add(row)
+        row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Dehaka", "Дехака", "Warrior", "Melee") : DGV_Heroes.Rows.Add(row)
+        row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Tracer", "Smuga,Трейсер", "Assassin", "Ranged") : DGV_Heroes.Rows.Add(row)
+        row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Chromie", "Cromi,Cromie,Chronia,Хроми,Crona", "Assassin", "Ranged") : DGV_Heroes.Rows.Add(row)
+        row = New DataGridViewRow : row.CreateCells(DGV_Heroes, "Medivh", "Медив", "Specialist", "Ranged") : DGV_Heroes.Rows.Add(row)
     End Sub
     Private Sub Butt_Ok_Click(sender As Object, e As EventArgs) Handles Butt_Ok.Click
         SaveSettings()
